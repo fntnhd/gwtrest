@@ -1,0 +1,16 @@
+package ${context.getProperty("namespace")}.server.message;
+
+import java.text.MessageFormat;
+
+/**
+ * Formats message text
+ * 
+ */
+public final class MessageFormatter {
+    
+    public static String format(String template, String[] inserts) {
+        MessageFormat f = new MessageFormat(template);
+        return f.format(inserts);
+    }
+    
+}

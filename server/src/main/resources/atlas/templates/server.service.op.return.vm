@@ -1,0 +1,1 @@
+#if($op.returnMany)List<#end${op.returnType}#if(${model.isEntity(${op.returnType})})#end#if($op.returnMany)>#end

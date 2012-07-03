@@ -1,0 +1,26 @@
+package ${context.getProperty("namespace")}.server.transfer;
+
+import ${context.getProperty("namespace")}.client.validate.ValidationErrorProxy;
+import ${context.getProperty("namespace")}.server.validate.ValidationError;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Transfers the state of server-side validation errors to client-side messages
+ */
+public final class ValidationErrorTransfer {
+
+    public static ValidationErrorProxy transferToProxy(ValidationError error) {
+        return new ValidationErrorProxy(error.getText(), error.getProperty());
+    }
+
+    public static List<ValidationErrorProxy> transferToProxy(List<ValidationError> errors) {
+        List<ValidationErrorProxy> messages = new ArrayList<ValidationErrorProxy>(errors.size());
+
+        for(ValidationError e : errors) {
+            messages.add(transferToProxy(e));
+        }
+
+        return messages;
+    }
+}

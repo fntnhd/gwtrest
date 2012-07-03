@@ -1,0 +1,20 @@
+package ${context.getProperty("namespace")}.client.service;
+
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import ${context.getProperty("namespace")}.client.entity.*;
+import java.util.List;
+
+public interface ${type.name}RemoteAsync {
+#foreach($op in $type.operations)
+
+    /**
+#if(${util.isBlank(${op.documentation})})
+     * ${op.name}
+#else
+     * ${op.documentation}
+#end
+     */
+    public void ${op.name}(#parse("client.service.op.signature.vm")#if(! ${op.parameters.isEmpty()}),#end AsyncCallback<#parse("client.service.async.callback.vm")> callback);
+#end
+
+}

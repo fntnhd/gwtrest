@@ -1,0 +1,219 @@
+package ${context.getProperty("namespace")}.client.ui;
+
+import ${context.getProperty("namespace")}.client.ui.widget.*;
+#foreach($p in ${type.properties})
+#if(${model.isEnumeration(${p.type})})
+import ${context.getProperty("namespace")}.client.entity.${p.type}Proxy;
+#set($hasEnum = "true")
+#end
+#end
+#if(! ${type.operations.size().equals(0)})
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+#end
+#if(${type.hasTag("root")})
+import com.google.gwt.user.client.ui.RootPanel;
+#end
+
+
+/**
+ * ${type.name}
+ */
+public abstract class ${type.name}Base extends#if(${type.hasTag("extends")}) ${type.getTagValue("extends")}#else MessageView#end {
+
+    private static final String VIEW_NAME = "${type.name}";
+#foreach($p in ${type.properties})
+#if(${type.hasTag("readOnly")})
+    protected Label ${p.name};
+#else
+#if(${p.type.equals("String")})
+#if(${p.hasTag("input")})
+    protected ${p.getTagValue("input")} ${p.name};
+#elseif(${p.hasTag("countrylist")})
+    protected CountryListBox ${p.name};
+#elseif(${p.hasTag("monthlist")})
+    protected MonthListBox ${p.name};
+#elseif(${p.hasTag("yearlist")})
+    protected YearListBox ${p.name};
+#elseif(${p.hasTag("statelist")})
+    protected StateListBox ${p.name};
+#else
+    protected TextBox ${p.name};
+#end
+#elseif(${p.type.equals("java.util.Date")})
+    protected DatePicker ${p.name};
+#elseif(${model.isEnumeration(${p.type})})
+    protected EnumRadioButtonGroup<${p.type}Proxy> ${p.name};
+#elseif(${p.type.equals("boolean")})
+    protected CheckBox ${p.name};
+#else
+#if(${p.hasTag("list")})
+    protected ListBox<${p.type}Proxy> ${p.name}List;
+#end
+#end
+#end
+#end
+#foreach($o in ${type.operations})
+#if (${o.hasTag("input")})
+    protected ${o.getTagValue("input")} ${o.name};
+#else
+    protected Button ${o.name};
+#end
+#end
+
+    @Override
+    public String getViewName() {
+        return VIEW_NAME;
+    }
+#if(${type.properties.size()} > 0 || ${type.operations.size()} > 0)
+
+    @Override
+    protected void setupWidgets() {
+#foreach($p in ${type.properties})
+#if(${type.hasTag("readOnly")})
+        ${p.name} = new Label();
+        ${p.name}.setWordWrap(false);
+        ${p.name}.ensureDebugId("${type.name}-${p.name}");        
+#else
+#if(${p.type.equals("String")})
+#if(${p.hasTag("input")})
+        ${p.name} = new ${p.getTagValue("input")}();
+#elseif(${p.hasTag("countrylist")})
+        ${p.name} = new CountryListBox(#if(${p.hasTag("multi")}) true #end);
+#elseif(${p.hasTag("monthlist")})
+        ${p.name} = new MonthListBox(#if(${p.hasTag("multi")}) true #end);
+#elseif(${p.hasTag("yearlist")})
+        ${p.name} = new YearListBox(#if(${p.hasTag("multi")}) true #end);
+#elseif(${p.hasTag("statelist")})
+        ${p.name} = new StateListBox(#if(${p.hasTag("multi")}) true #end);
+#else
+        ${p.name} = new TextBox();
+#if(${p.hasTag("maxLength")})
+        ${p.name}.setMaxLength(${p.getTagValue("maxLength")});
+#end
+#end
+        ${p.name}.getElement().setAttribute("id","${p.name}");
+        ${p.name}.ensureDebugId("${type.name}-${p.name}");
+
+#elseif(${p.type.equals("java.util.Date")})
+        ${p.name} = new DatePicker();
+        ${p.name}.getElement().setAttribute("id","${p.name}");
+        ${p.name}.ensureDebugId("${type.name}-${p.name}");
+
+#elseif(${model.isEnumeration(${p.type})})
+        ${p.name} = new EnumRadioButtonGroup<${p.type}Proxy>("${p.name}", ${p.type}Proxy.values());
+        ${p.name}.ensureDebugId("${type.name}-${p.name}");
+#elseif(${p.type.equals("boolean")})
+        ${p.name} = new CheckBox();
+        ${p.name}.getElement().setAttribute("id","${p.name}");
+        ${p.name}.ensureDebugId("${type.name}-${p.name}");
+#else
+#if(${p.hasTag("list")})
+        ${p.name}List = new ListBox<${p.type}Proxy>(#if(${p.hasTag("multi")}) true #else false #end,#if(${p.hasTag("hasBlank")}) true #else false #end);
+        ${p.name}.getElement().setAttribute("id","${p.name}");
+        ${p.name}List.ensureDebugId("${type.name}-${p.name}List");
+#end
+#end
+#end
+#end
+
+#foreach($o in ${type.operations})
+#if(${o.hasTag("input")})
+        ${o.name} = new ${o.getTagValue("input")}();
+#else
+        ${o.name} = new Button();
+#end
+        ${o.name}.setText("${util.capitalize(${o.name})}");
+        ${o.name}.getElement().setAttribute("id","${o.name}");
+        ${o.name}.ensureDebugId("${type.name}-${o.name}");
+#end
+    }
+
+#end
+#if(! ${type.operations.size().equals(0)} || ${hasList.equals("true")})
+
+    @Override
+    protected void setupWidgetEvents() {
+#foreach($p in ${type.properties})
+#if(${p.hasTag("list")})
+
+        ${p.name}List.addChangeHandler(
+                new ChangeHandler() {
+
+                    @Override
+                    public void onChange(ChangeEvent e) {
+                        on${util.capitalize(${p.name})}ListChange();
+                    }
+                });
+#end
+#end
+#foreach($o in ${type.operations})
+
+        ${o.name}.addClickHandler(
+                new ClickHandler() {
+
+                    @Override
+                    public void onClick(ClickEvent e) {
+                        ${o.name}();
+                    }
+                });
+#end
+    }
+#end
+#foreach($p in ${type.properties})
+#if(${p.hasTag("list")})
+
+    protected abstract void on${util.capitalize(${p.name})}ListChange();
+#end
+#end
+#if(! ${type.operations.size().equals(0)})
+#foreach($o in ${type.operations})
+
+    protected abstract void ${o.name}();
+#end
+#end
+#if(${type.hasTag("root")})
+
+    @Override
+    protected void layoutWidgets() {
+#foreach($p in ${type.properties})
+#if(! ${model.isEnumeration(${p.type})})
+        RootPanel.get("${type.name}-${p.name}").add(${p.name});
+#if(! ${type.hasTag("readOnly")} && ${p.type.equals("String")} || ${p.type.equals("java.util.Date")})
+        RootPanel.get("${type.name}-${p.name}-message").add(${p.name}.getMessage());
+#end
+#end
+#end
+#foreach($o in ${type.operations})
+        RootPanel.get("${type.name}-${o.name}").add(${o.name});
+#end
+    }
+#end
+#if(! ${type.hasTag("readOnly")})
+
+    protected boolean validate() {
+        reset();
+
+        boolean valid = true;
+#foreach($p in ${type.properties})
+#if(${p.type.equals("String")} && ${p.hasTag("required")})
+        if(${p.name}.isEmpty()) {
+            valid=false;
+            ${p.name}.error("Required");
+        }
+#end
+#end
+        return valid;
+    }
+
+    @Override
+    protected void reset() {
+        super.reset();
+#foreach($p in ${type.properties})
+#if(! ${type.hasTag("readOnly")} && ${p.type.equals("String")} || ${p.type.equals("java.util.Date")})
+        ${p.name}.reset();
+#end
+#end
+    }
+#end
+}

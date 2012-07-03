@@ -1,0 +1,77 @@
+
+    @Override
+    public void transferToProxy(Proxy proxy, AbstractEntity entity) {
+        ${type.name}Proxy ${util.uncapitalize(${type.name})}Proxy = (${type.name}Proxy) proxy;
+        ${type.name} ${util.uncapitalize(${type.name})} = (${type.name}) entity;
+#if(! ${util.isBlank(${type.getGeneralization().getName()})})
+        super.transferToProxy(${util.uncapitalize(${type.name})}Proxy, ${util.uncapitalize(${type.name})});
+#end
+
+#if(! ${type.hasTag("transient")})
+        ${util.uncapitalize(${type.name})}Proxy.setId(${util.uncapitalize(${type.name})}.getId());
+#end
+#foreach($p in ${type.properties})
+#if(${p.hasTag("input")})
+#if(${p.getTagValue("input").equals("date")})
+        if(${util.uncapitalize(${type.name})}.get${util.capitalize(${p.name})}() != null) {
+            ${util.uncapitalize(${type.name})}Proxy.set${util.capitalize(${p.name})}Month(DateUtil.getMonth(${util.uncapitalize(${type.name})}.get${util.capitalize(${p.name})}()));
+            ${util.uncapitalize(${type.name})}Proxy.set${util.capitalize(${p.name})}Day(DateUtil.getDay(${util.uncapitalize(${type.name})}.get${util.capitalize(${p.name})}()));
+            ${util.uncapitalize(${type.name})}Proxy.set${util.capitalize(${p.name})}Year(DateUtil.getYear(${util.uncapitalize(${type.name})}.get${util.capitalize(${p.name})}()));
+            ${util.uncapitalize(${type.name})}Proxy.set${util.capitalize(${p.name})}(${util.uncapitalize(${type.name})}.get${util.capitalize(${p.name})}());
+        }
+#elseif(${p.getTagValue("input").equals("phone")})
+        ${util.uncapitalize(${type.name})}Proxy.set${util.capitalize(${p.name})}1(PhoneUtil.getPart1(${util.uncapitalize(${type.name})}.get${util.capitalize(${p.name})}()));
+        ${util.uncapitalize(${type.name})}Proxy.set${util.capitalize(${p.name})}2(PhoneUtil.getPart2(${util.uncapitalize(${type.name})}.get${util.capitalize(${p.name})}()));
+        ${util.uncapitalize(${type.name})}Proxy.set${util.capitalize(${p.name})}3(PhoneUtil.getPart3(${util.uncapitalize(${type.name})}.get${util.capitalize(${p.name})}()));
+#end
+#elseif(${model.isEnumeration(${p.type})})
+        if (${util.uncapitalize(${type.name})}.get${util.capitalize(${p.name})}() != null) {
+            ${util.uncapitalize(${type.name})}Proxy.set${util.capitalize(${p.name})}(${p.type}Proxy.valueOf(${util.uncapitalize(${type.name})}.get${util.capitalize(${p.name})}().toString()));
+        }
+#else
+        ${util.uncapitalize(${type.name})}Proxy.set${util.capitalize(${p.name})}(${util.uncapitalize(${type.name})}.get${util.capitalize(${p.name})}());
+#end
+#end
+#foreach($ass in ${type.getOneToMany()})
+#if(${ass.isOwner()})
+
+        for(${ass.entity.name} ${util.uncapitalize(${ass.name})} : ${util.uncapitalize(${type.name})}.get${util.capitalize(${ass.name})}List()) {
+            Proxy ${util.uncapitalize(${ass.name})}Proxy = ProxyFactory.proxy(${util.uncapitalize(${ass.name})});
+            ${util.uncapitalize(${type.name})}Proxy.add${util.capitalize(${ass.name})}((${ass.entity.name}Proxy) ${util.uncapitalize(${ass.name})}Proxy);
+        }
+#else
+#if(!${ass.entity.isAbstractEntity()})   
+        if (${util.uncapitalize(${type.name})}Proxy.get${util.capitalize(${ass.name})}() == null && ${util.uncapitalize(${type.name})}.get${util.capitalize(${ass.name})}() != null) {
+            ${ass.entity.name}Proxy ${ass.name}Proxy = new ${ass.entity.name}Proxy();
+            ${ass.name}Proxy.setId(${util.uncapitalize(${type.name})}.get${util.capitalize(${ass.name})}().getId());
+            ${util.uncapitalize(${type.name})}Proxy.set${util.capitalize(${ass.name})}(${ass.name}Proxy);
+        }
+#end
+#end
+#end
+#foreach($ass in ${type.getManyToMany()})
+#if(${ass.isOwner()})
+
+        for(${ass.entity.name} ${util.uncapitalize(${ass.name})} : ${util.uncapitalize(${type.name})}.get${util.capitalize(${ass.name})}List()) {
+            Proxy ${util.uncapitalize(${ass.name})}Proxy = ProxyFactory.proxy(${util.uncapitalize(${ass.name})});
+            ${util.uncapitalize(${type.name})}Proxy.add${util.capitalize(${ass.name})}((${ass.entity.name}Proxy) ${util.uncapitalize(${ass.name})}Proxy);
+        }
+#end
+#end
+#foreach($ass in ${type.getManyToOne()})
+        if(${util.uncapitalize(${type.name})}.get${util.capitalize(${ass.name})}() != null) {
+            Proxy ${util.uncapitalize(${ass.name})}Proxy = ProxyFactory.proxy(${util.uncapitalize(${type.name})}.get${util.capitalize(${ass.name})}());
+            ${util.uncapitalize(${type.name})}Proxy.set${util.capitalize(${ass.name})}((${ass.entity.name}Proxy) ${util.uncapitalize(${ass.name})}Proxy);
+        }
+
+#end
+#foreach($ass in ${type.getOneToOne()})
+#if(${ass.isOwner()})
+
+        if(${util.uncapitalize(${type.name})}.get${util.capitalize(${ass.name})}() != null) {
+            Proxy ${util.uncapitalize(${ass.name})}Proxy = ProxyFactory.proxy(${util.uncapitalize(${type.name})}.get${util.capitalize(${ass.name})}());
+            ${util.uncapitalize(${type.name})}Proxy.set${util.capitalize(${ass.name})}((${ass.entity.name}Proxy) ${util.uncapitalize(${ass.name})}Proxy);
+        }
+#end
+#end
+    }

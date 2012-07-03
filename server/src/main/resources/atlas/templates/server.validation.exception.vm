@@ -1,0 +1,33 @@
+package ${context.getProperty("namespace")}.server.validate;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Thrown when some validation errors have been encountered.
+ */
+public class ValidationException extends Exception {
+
+    private List<ValidationError> errors = new ArrayList<ValidationError>();
+
+    public ValidationException() {
+
+    }
+
+    public ValidationException(Exception e) {
+        super(e);
+    }
+
+    public ValidationException(ValidationError error) {
+        super();
+        errors.add(error);
+    }
+
+    public List<ValidationError> getErrors() {
+        return errors;
+    }
+
+    public void addError(ValidationError error) {
+        errors.add(error);
+    }
+}

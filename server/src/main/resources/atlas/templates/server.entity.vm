@@ -1,0 +1,200 @@
+package ${context.getProperty("namespace")}.server.entity;
+
+
+import org.codehaus.jackson.annotate.*;
+#if(${type.hasMany()})
+import java.util.List;
+import java.util.ArrayList;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+#end
+#if(${type.hasTag("criteria")})
+import java.util.Map;
+import java.util.HashMap;
+import org.apache.commons.lang.StringUtils;
+#end
+import ${context.getProperty("namespace")}.server.message.ErrorMessages;
+#if(! ${type.hasTag("transient")})
+import javax.persistence.*;
+#end
+
+#if(! ${type.hasTag("transient")})
+@Entity
+#if(${type.hasTag("table")})
+@Table(name="${type.getTagValue("table")}")
+#else
+@Table(name="${util.addSpacerToCamelCaseUpper(${type.name}, "_")}")
+#end
+#if(${type.hasTag("inheritance")})
+@Inheritance(strategy = InheritanceType.JOINED)
+#end
+@NamedQueries({
+#if(${type.hasTagsOfType("namedQuery")})
+#foreach($namedQuery in ${type.getTagsOfType("namedQuery")})
+    @NamedQuery(name="${namedQuery.name}", query="${namedQuery.value}"),
+#end
+#end
+    @NamedQuery(name="find${type.name}ById", query="select e from ${type.name} e where e.id=:id"),
+    @NamedQuery(name="findAll${type.name}", query="select e from ${type.name} e")
+})
+#end
+#if(${util.isBlank(${type.getGeneralization()})})
+public class ${type.name} extends AbstractEntity {
+
+#else
+public class ${type.name} extends ${type.getGeneralization().getName()} {
+
+#end
+#if(${type.hasTagsOfType("namedQuery")})
+#foreach($namedQuery in ${type.getTagsOfType("namedQuery")})
+    public static final String ${util.addSpacerToCamelCaseUpper(${namedQuery.name},"_")} = "${namedQuery.name}";
+#end
+#end
+    public static final String FIND_${util.upperCase(${type.name})}_BY_ID = "find${type.name}ById";
+    public static final String FIND_ALL_${util.upperCase(${type.name})} = "findAll${type.name}";
+#foreach($p in ${type.properties})
+    private ${p.type} ${p.name};
+#end
+#foreach($ass in ${type.getOneToMany()})
+#if(${ass.isOwner()})
+    private List<${ass.entity.name}> ${ass.name}List;
+#else
+    private ${ass.entity.name} ${ass.name};
+#end
+#end
+#foreach($ass in ${type.getManyToOne()})
+    private ${ass.entity.name} ${ass.name};
+#end
+#foreach($ass in ${type.getManyToMany()})
+#if(${ass.isOwner()})
+    private List<${ass.entity.name}> ${ass.name}List;
+#end
+#end
+#foreach($ass in ${type.getOneToOne()})
+    private ${ass.entity.name} ${ass.name};
+#end
+#if(${util.isBlank(${type.getGeneralization()})})
+#if(! ${type.hasTag("transient")})
+    private Long id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+#end
+#end
+#foreach($p in ${type.properties})
+
+#if(${p.hasTag("transient")})
+    @Transient
+#else
+#if(! ${type.hasTag("transient")})
+#if(${p.hasTag("lob")})
+    @Lob
+#end
+    @Column(name="${util.addSpacerToCamelCaseUpper(${p.name}, "_")}"#if(${p.hasTag("scale")}), scale=${p.getTagValue("scale")}#end)
+#if(${p.type.equals("java.util.Date")})
+#if(${p.hasTag("temporal")})
+#if(${p.getTagValue("temporal").equals("timestamp")})
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+#end
+#else
+    @Temporal(javax.persistence.TemporalType.DATE)
+#end
+#end
+#end
+#end
+    public ${p.type} get${util.capitalize(${p.name})}() {
+        return ${p.name};
+    }
+
+    public void set${util.capitalize(${p.name})}(${p.type} ${p.name}) {
+        this.${p.name} = ${p.name};
+    }
+#end
+
+#parse("server.entity.many.to.one.vm")
+#parse("server.entity.one.to.one.vm")
+#parse("server.entity.many.to.many.vm")
+#parse("server.entity.one.to.many.vm")
+
+    public void validate() {
+#if(! ${util.isBlank(${type.getGeneralization()})})
+        super.validate();
+#end
+#foreach($p in ${type.properties})
+#if($p.hasTag("required") || $p.hasTag("maxLength"))
+        validate${util.capitalize(${p.name})}();
+#end
+#end
+
+        ${type.name}Validator.validate(this);
+    }
+
+#foreach($p in ${type.properties})
+#if($p.hasTag("required") || $p.hasTag("maxLength"))
+
+    public void validate${util.capitalize(${p.name})}() { 
+        if(get${util.capitalize(${p.name})}() == null) {
+#if($p.hasTag("required"))
+            addError(ErrorMessages.REQUIRED, new String[] {"${util.lowerCase(${util.addSpacerToCamelCase(${p.name}, " ")})}"}, "${p.name}");
+#end
+        }
+        else {
+#if($p.hasTag("maxLength"))
+            if(get${util.capitalize(${p.name})}().length() > ${p.getTagValue("maxLength")}) {
+                addError(ErrorMessages.MAX_LENGTH, new String[] {"${util.lowerCase(${util.addSpacerToCamelCase(${p.name}, " ")})}", "${p.getTagValue("maxLength")}"}, ${p.name});
+            }
+#end
+        }
+    }
+#end
+#end
+#if(${util.isBlank(${type.getGeneralization()})})
+#if(! ${type.hasTag("transient")})
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof ${type.name})) {
+            return false;
+        }
+        ${type.name} other = (${type.name}) object;
+        if ((this.id == null && other.getId() != null) || (this.id != null && !this.id.equals(other.getId()))) {
+            return false;
+        }
+        return true;
+    }
+#end
+#end
+#if(${type.hasTag("criteria")})
+
+    public Map<String, Object> getQueryParameters() {
+        Map parameters = new HashMap<String, Object>();
+
+#foreach($p in ${type.properties})
+#if(${p.type.equals("String")})
+        if(!StringUtils.isBlank(get${util.capitalize(${p.name})}())) {
+#else
+        if(get${util.capitalize(${p.name})}() != null) {
+#end
+            parameters.put("${p.name}", get${util.capitalize(${p.name})}());
+        }
+#end
+
+        return parameters;
+    }
+#end
+}

@@ -1,0 +1,34 @@
+package ${context.getProperty("namespace")}.client;
+
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import ${context.getProperty("namespace")}.client.ui.*;
+
+/**
+ * Creates a new instance of a view panel for a specified page.
+ */
+public final class ViewFactory {
+
+    public static Panel createView(String viewName) {
+        Panel p = null;
+
+        switch(View.valueOf(viewName)) {
+#foreach($t in $types)
+#if(${t.hasTag("root")})
+
+            case ${t.name} :
+                p = new ${t.name}();
+                break;
+#end
+#end
+
+            default :
+                p = new VerticalPanel();
+                p.add(new Label("View [" + viewName + "] not found"));
+                break;
+        }
+
+        return p;
+    }
+}

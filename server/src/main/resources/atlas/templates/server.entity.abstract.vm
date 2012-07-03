@@ -1,0 +1,65 @@
+package ${context.getProperty("namespace")}.server.entity;
+
+import ${context.getProperty("namespace")}.server.message.MessageFormatter;
+import ${context.getProperty("namespace")}.server.validate.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlTransient;
+import org.codehaus.jackson.annotate.JsonIgnore;
+
+/**
+ * Base class for entities
+ */
+@MappedSuperclass
+public abstract class AbstractEntity implements Serializable {
+
+    private List<ValidationError> errors;
+
+    @Transient
+    @XmlTransient
+    @JsonIgnore
+    public List<ValidationError> getErrors() {
+        if(errors==null) {
+            errors=new ArrayList<ValidationError>();
+        }
+        return errors;
+    }
+
+    public void setErrors(List<ValidationError> errors) {
+        this.errors = errors;
+    }
+
+    public void addError(ValidationError error) {
+        getErrors().add(error);
+    }
+
+    public void addError(String text) {
+        getErrors().add(new ValidationError(text));
+    }
+    
+    public void addError(String text, String property) {
+        getErrors().add(new ValidationError(text, property));
+    }
+    
+    public void addError(String template, String[] inserts) {
+        String text = MessageFormatter.format(template, inserts);
+        addError(text);
+    }
+    
+    public void addError(String template, String[] inserts, String property) {
+        String text = MessageFormatter.format(template, inserts);
+        addError(text,property);
+    }
+
+    public void clearErrors() {
+        getErrors().clear();
+    }
+
+    public boolean hasErrors() {
+        return getErrors().size() > 0;
+    }
+
+}

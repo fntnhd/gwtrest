@@ -1,0 +1,56 @@
+package ${context.getProperty("namespace")}.client.service;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import ${context.getProperty("namespace")}.client.validate.ClientValidationException;
+import ${context.getProperty("namespace")}.client.entity.*;
+import java.util.List;
+
+public class ${type.name}Client {
+#foreach($op in $type.operations)
+
+    /**
+#if(${util.isBlank(${op.documentation})})
+     * ${op.name}
+#else
+     * ${op.documentation}
+#end
+     */
+    public void ${op.name}(#parse("client.service.op.signature.vm")#if(! ${op.parameters.isEmpty()}),#end final ${util.capitalize(${op.name})}Client client) {
+        ${type.name}RemoteAsync async = GWT.create(${type.name}Remote.class);
+        AsyncCallback<#parse("client.service.async.callback.vm")> callback = new AsyncCallback<#parse("client.service.async.callback.vm")>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                if(caught.toString().indexOf("view: \"InvalidSessionView\"") > -1) {
+                    navigate("invalidSession");
+                } else {
+                    client.${op.name}Failure(caught);
+                }
+            }
+
+            @Override
+            public void onSuccess(#parse("client.service.async.callback.vm") result) {
+                client.${op.name}Success(result);
+            }
+        };
+
+        async.${op.name}(#foreach($p in ${op.parameters})${p.name}#if($velocityHasNext), #else,#end#end callback);
+
+    }
+#end
+#foreach($op in $type.operations)
+
+    public interface ${util.capitalize(${op.name})}Client {
+
+        public void ${op.name}Failure(Throwable caught);
+
+        public void ${op.name}Success(#parse("client.service.async.callback.vm") result);
+    }
+
+#end
+
+    public native void navigate(String url) /*-{
+        $wnd.location = "/cps-web/" + url;
+    }-*/;
+}

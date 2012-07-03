@@ -1,0 +1,40 @@
+package ${context.getProperty("namespace")}.client.service;
+
+import ${context.getProperty("namespace")}.client.entity.*;
+import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+
+import java.util.List;
+
+@RemoteServiceRelativePath("sessionService")
+public interface SessionServiceRemote extends RemoteService {
+
+    /**
+     * Get the secured user
+     * @return UserProxy
+     */
+    public UserProxy getUser();
+
+    /**
+     * Get the unsecured user
+     * @return UserProxy
+     */
+    public UserProxy getUnsecuredUser();
+
+    public String getLoginMessage();
+
+    public String getRequestUrl();
+
+    
+
+#foreach($e in $types)
+#if(! ${e.getName().equals("User")})
+
+    /**
+     * Get ${e.name}
+     * @return ${e.name}Proxy
+     */
+    public ${e.name}Proxy get${e.name}();
+#end
+#end
+}

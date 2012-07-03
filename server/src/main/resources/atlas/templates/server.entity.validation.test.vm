@@ -1,0 +1,80 @@
+package ${context.getProperty("namespace")}.server.entity;
+
+import ${context.getProperty("namespace")}.server.validate.ValidationError;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+/**
+ * Responsible for testing basic field level validation
+ */
+public class ${type.name}ValidationTest {
+    
+    private static ${type.name}ValidationTestHelper helper;
+    
+    public ${type.name}ValidationTest() {
+    }
+
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+        helper = new ${type.name}ValidationTestHelper();
+    }
+
+    @Test
+    public void testHelperExists() {
+        assertNotNull(helper);
+    }
+#foreach($p in ${type.properties})
+#if(${p.hasTag("required")})
+
+    @Test
+    public void testNotNull${util.capitalize(${p.name})}() throws Exception {
+        ${type.name} o = new ${type.name}();
+        o.set${util.capitalize(${p.name})}(helper.valid${util.capitalize(${p.name})}());
+        o.validate${util.capitalize(${p.name})}();
+        
+        for(ValidationError e : o.getErrors()) {
+            if(e.getText().equals("No ${util.lowerCase(${util.addSpacerToCamelCase(${p.name}, " ")})} provided")) {
+                fail();
+                return;
+            }
+        }
+        
+        assertTrue(true);      
+    }
+
+    @Test
+    public void testNull${util.capitalize(${p.name})}() throws Exception {
+        ${type.name} o = new ${type.name}();
+        o.validate${util.capitalize(${p.name})}();
+        
+        for(ValidationError e : o.getErrors()) {
+            if(e.getText().equals("No ${util.lowerCase(${util.addSpacerToCamelCase(${p.name}, " ")})} provided")) {
+                assertTrue(true);
+                return;
+            }
+        }
+        
+        fail();   
+    }
+#end
+#if(${p.hasTag("maxLength")})
+
+    @Test
+    public void test${util.capitalize(${p.name})}ExceedsMaxLength() throws Exception {
+        ${type.name} o = new ${type.name}();
+        o.set${util.capitalize(${p.name})}(helper.${p.name}ExceedsMaxLength());
+        o.validate${util.capitalize(${p.name})}();
+        
+        for(ValidationError e : o.getErrors()) {
+            if(e.getText().equals("Max length for ${util.lowerCase(${util.addSpacerToCamelCase(${p.name}, " ")})} is ${p.getTagValue("maxLength")}")) {
+                assertTrue(true);
+                return;
+            }
+        }
+        
+        fail();   
+    }
+#end
+#end
+}

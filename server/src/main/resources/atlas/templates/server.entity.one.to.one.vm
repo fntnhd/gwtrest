@@ -1,0 +1,45 @@
+#foreach($ass in ${type.getOneToOne()})
+
+    /**
+     * Get the ${ass.name} of the ${type.name}
+     * @return ${ass.name}
+     * @see ${ass.entity.name}
+     */
+#if(${ass.isOwner()})
+    @OneToOne(mappedBy="${ass.role}", cascade = {CascadeType.ALL})
+    public ${ass.entity.name} get${util.capitalize(${ass.name})}() {
+        return ${ass.name};
+    }
+
+    /**
+     * Set the ${ass.name} of the ${type.name}
+     * @param ${ass.name} The ${ass.name}
+     * @see ${ass.entity.name}
+     */
+    public void set${util.capitalize(${ass.name})}(${ass.entity.name} ${ass.name}) {
+        this.${ass.name} = ${ass.name};
+        if(${ass.name} != null) {
+            ${util.uncapitalize(${ass.name})}.set${util.capitalize(${ass.role})}((${type.name})this);
+        }
+    }
+#else
+
+    @javax.xml.bind.annotation.XmlTransient
+    @ManyToOne
+    @JoinColumns({
+        @JoinColumn(name = "${util.addSpacerToCamelCaseUpper(${ass.name}, "_")}_ID", referencedColumnName = "ID")
+    })
+    public ${ass.entity.name} get${util.capitalize(${ass.name})}() {
+        return ${ass.name};
+    }
+
+    /**
+     * Set the ${ass.name} of the ${type.name}
+     * @param ${ass.entity.name} The ${ass.name}
+     * @see ${ass.entity.name}
+     */
+    public void set${util.capitalize(${ass.name})}(${ass.entity.name} ${ass.name}) {
+        this.${ass.name} = ${ass.name};
+    }
+#end
+#end

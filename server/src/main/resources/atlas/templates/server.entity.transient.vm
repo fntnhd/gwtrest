@@ -1,0 +1,51 @@
+package ${context.getProperty("namespace")}.server.entity;
+
+#if(${type.hasMany()})
+import java.util.List;
+import java.util.ArrayList;
+#end
+
+#if(${util.isBlank(${type.getGeneralization()})})
+public class ${type.name} extends AbstractEntity {
+#else
+public class ${type.name} extends ${type.getGeneralization().getName()} {
+#end
+
+#foreach($p in ${type.properties})
+    private ${p.type} ${p.name};
+#end
+#foreach($ass in ${type.getOneToMany()})
+#if(${ass.isOwner()})
+    private List<${ass.entity.name}> ${ass.name}List;
+#else
+    private ${ass.entity.name} ${ass.name};
+#end
+#end
+#foreach($ass in ${type.getManyToOne()})
+    private ${ass.entity.name} ${ass.name};
+#end
+#foreach($ass in ${type.getManyToMany()})
+#if(${ass.isOwner()})
+    private List<${ass.entity.name}> ${ass.name}List;
+#end
+#end
+#foreach($ass in ${type.getOneToOne()})
+    private ${ass.entity.name} ${ass.name};
+#end
+#foreach($p in ${type.properties})
+
+    public ${p.type} get${util.capitalize(${p.name})}() {
+        return ${p.name};
+    }
+
+    public void set${util.capitalize(${p.name})}(${p.type} ${p.name}) {
+        this.${p.name} = ${p.name};
+    }
+#end
+
+#parse("server.entity.many.to.one.vm")
+#parse("server.entity.one.to.one.vm")
+#parse("server.entity.many.to.many.vm")
+#parse("server.entity.one.to.many.vm")
+
+}

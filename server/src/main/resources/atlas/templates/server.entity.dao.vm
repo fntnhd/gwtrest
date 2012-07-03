@@ -1,0 +1,55 @@
+package ${context.getProperty("namespace")}.server.entity;
+
+import ${context.getProperty("namespace")}.server.validate.*;
+import java.util.List;
+
+public interface ${type.name}DAO {
+
+    /**
+     * findAll${type.name}
+     * @return ${type.name}
+     */
+    public List<${type.name}> findAll() throws ValidationException;
+
+
+    /**
+     * Find a ${type.name} by id
+     * @return ${type.name}
+     */
+    public ${type.name} findById(Long id) throws ValidationException;
+
+
+    /**
+     * Create a ${type.name}
+     * @return ${type.name}
+     */
+    public ${type.name} create(${type.name} ${util.uncapitalize(${type.name})}) throws ValidationException;
+
+
+    /**
+     * Update a ${type.name}
+     * @return ${type.name}
+     */
+    public ${type.name} update(${type.name} ${util.uncapitalize(${type.name})}) throws ValidationException;
+
+
+    /**
+     * Delete a ${type.name}
+     */
+    public ${type.name} delete(Long id) throws ValidationException;
+
+
+    /**
+     * Delete all ${type.name}
+     */
+    public void deleteAll() throws ValidationException;
+#if(${type.hasTag("businessKey")})
+#set($businessKey = ${type.getTagValue("businessKey")})
+
+    /**
+     * Finds a ${type.name} by $businessKey
+     * @return ${type.name}
+     */
+    public ${type.name} findBy${util.capitalize($businessKey)}(#if(${type.hasTag("businessKeyType")}) ${type.getTagValue("businessKeyType")}#else String#end $businessKey) throws ValidationException;
+#end
+}

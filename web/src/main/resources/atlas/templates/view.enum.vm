@@ -1,0 +1,14 @@
+package ${context.getProperty("namespace")}.client;
+
+/**
+ * Enumerated list of all views
+ */
+public enum View {
+#foreach($t in $types)
+#if(${t.hasTag("root")})
+    ${t.name}#if($velocityHasNext),
+#end
+#end
+#end
+
+}

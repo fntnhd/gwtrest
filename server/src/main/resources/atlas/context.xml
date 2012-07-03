@@ -1,0 +1,143 @@
+
+<context>
+    <properties>
+        <property name="model.root" value="${root}/model"/>
+        <property name="project.root" value="${root}/server"/>
+        <property name="main.resource.root" value="${project.root}/src/main/resources"/>
+        <property name="main.source.root" value="${project.root}/src/main/java"/>
+        <property name="test.source.root" value="${project.root}/src/test/java"/>
+        <property name="generated.source.root" value="${project.root}/target/generated-sources/atlas"/>
+        <property name="generated.test.source.root" value="${project.root}/target/generated-sources/atlas-test"/>
+        <property name="namespace" value="com.us.fountainhead.gwtrest"/>
+        <property name="base.package" value="com/us/fountainhead/gwtrest"/>
+    </properties>
+    <models>
+        <model file="${model.root}/pim.xml" adapter="org.atlas.model.adapter.ea.ModelAdapter"/>
+        <model file="${model.root}/entity.tags.xml" adapter="org.atlas.model.adapter.xml.tag.TagAdapter"/>
+    </models>
+    <primitives file="${model.root}/primitives.xml"/>
+    <templates dir="${main.resource.root}/atlas/templates" />
+    <utilities>
+        <utility name="util" impl="org.atlas.utils.AtlasStringUtils"/>
+        <utility name="model" impl="org.atlas.utils.ModelUtility"/>
+        <utility name="eval" impl="org.atlas.engine.utility.EvaluationUtility"/>
+    </utilities>
+    <conditions>
+        <condition name="notTransient"><![CDATA[!${eval.boolTag(type, 'transient')}]]></condition>
+        <condition name="transient"><![CDATA[${eval.boolTag(type, 'transient')}]]></condition>
+    </conditions>
+    <targets>
+        <target name="server.enum"
+                stereotype="enumeration"
+                template="server.enum.vm"
+                outputFile="${name}.java"
+                outputPath="${generated.source.root}/${base.package}/server/entity"
+                overwrite="true"/>
+        <target name="server.entity.abstract"
+                stereotype="entity"
+                template="server.entity.abstract.vm"
+                outputFile="AbstractEntity.java"
+                outputPath="${generated.source.root}/${base.package}/server/entity"
+                collection="true"
+                overwrite="true"/>
+        <target name="server.entity"
+                stereotype="entity"
+                condition="notTransient"
+                template="server.entity.vm"
+                outputFile="${name}.java"
+                outputPath="${generated.source.root}/${base.package}/server/entity"
+                overwrite="true"/>
+        <target name="server.entity.transient"
+                stereotype="entity"
+                condition="transient"
+                template="server.entity.transient.vm"
+                outputFile="${name}.java"
+                outputPath="${generated.source.root}/${base.package}/server/entity"
+                overwrite="true"/>
+        <target name="server.entity.validator"
+                stereotype="entity"
+                condition="notTransient"
+                template="server.entity.validator.vm"
+                outputFile="${name}Validator.java"
+                outputPath="${main.source.root}/${base.package}/server/entity"
+                overwrite="false"/>
+        <target name="server.message.formatter"
+                stereotype="entity"
+                template="server.message.formatter.vm"
+                outputFile="MessageFormatter.java"
+                outputPath="${generated.source.root}/${base.package}/server/message"
+                collection="true"
+                overwrite="true"/>
+        <target name="server.error.messages"
+                stereotype="entity"
+                template="server.error.messages.vm"
+                outputFile="ErrorMessages.java"
+                outputPath="${main.source.root}/${base.package}/server/message"
+                collection="true"
+                overwrite="false"/>
+        <target name="server.entity.dao"
+                stereotype="entity"
+                condition="notTransient"
+                template="server.entity.dao.vm"
+                outputFile="${name}DAO.java"
+                outputPath="${generated.source.root}/${base.package}/server/entity"
+                overwrite="true"/>
+        <target name="server.entity.dao.impl"
+                stereotype="entity"
+                condition="notTransient"
+                template="server.entity.dao.impl.vm"
+                outputFile="${name}DAOImpl.java"
+                outputPath="${generated.source.root}/${base.package}/server/entity/impl"
+                overwrite="true">
+            <property name="persistence.unit" value="gwtrestPU"/>
+        </target>
+        <target name="server.validation.error"
+                stereotype="entity"
+                template="server.validation.error.vm"
+                outputFile="ValidationError.java"
+                outputPath="${generated.source.root}/${base.package}/server/validate"
+                collection="true"
+                overwrite="true"/>
+        <target name="server.validation.exception"
+                stereotype="entity"
+                template="server.validation.exception.vm"
+                outputFile="ValidationException.java"
+                outputPath="${generated.source.root}/${base.package}/server/validate"
+                collection="true"
+                overwrite="true"/>
+        <target name="persistence.xml"
+                stereotype="entity"
+                collection="true"
+                template="persistence.xml.vm"
+                outputFile="persistence.xml"
+                outputPath="${main.resource.root}/META-INF"
+                overwrite="true">
+            <property name="data.source" value="jdbc/gwtrestDS"/>
+            <property name="persistence.unit" value="gwtrestPU"/>
+        </target>
+        <target name="server.service"
+                stereotype="control"
+                template="server.service.vm"
+                outputFile="${name}.java"
+                outputPath="${generated.source.root}/${base.package}/server/service"
+                overwrite="true"/>
+        <target name="server.service.impl"
+                stereotype="control"
+                template="server.service.impl.vm"
+                outputFile="${name}Impl.java"
+                outputPath="${main.source.root}/${base.package}/server/service/impl"
+                overwrite="false"/>
+        <target name="server.entity.validation.test"
+                stereotype="entity"
+                template="server.entity.validation.test.vm"
+                outputFile="${name}ValidationTest.java"
+                outputPath="${test.source.root}/${base.package}/server/entity"
+                overwrite="true"/>
+        <target name="server.entity.validation.test.helper"
+                stereotype="entity"
+                template="server.entity.validation.test.helper.vm"
+                outputFile="${name}ValidationTestHelper.java"
+                outputPath="${test.source.root}/${base.package}/server/entity"
+                overwrite="false"/>
+    </targets>
+</context>

@@ -1,0 +1,43 @@
+package ${context.getProperty("namespace")}.client.service;
+
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import ${context.getProperty("namespace")}.client.entity.*;
+import java.util.List;
+
+public interface ${type.name}DataServiceRemoteAsync {
+#if(! ${type.isAbstractEntity()} )
+
+    /**
+     * Find All ${type.name}
+     */
+    public void findAll${type.name}(AsyncCallback<List<${type.name}Proxy>> callback);
+
+
+    /**
+     * Find ${type.name} By Id
+     */
+    public void find${type.name}ById(Long id, AsyncCallback<${type.name}Proxy> callback);
+
+
+    /**
+     * Save ${type.name}
+     */
+    public void save${type.name}(${type.name}Proxy ${util.uncapitalize(${type.name})}, AsyncCallback<${type.name}Proxy> callback);
+
+
+    /**
+     * Delete ${type.name}
+     */
+    public void delete${type.name}(Long id, AsyncCallback<Void> callback);
+#if(${type.hasTag("businessKey")})
+#set($businessKey = ${type.getTagValue("businessKey")})
+
+
+    /**
+     * Finds a ${type.name} by $businessKey
+     * @return ${type.name}
+     */
+    public void find${type.name}By${util.capitalize($businessKey)}(String $businessKey, AsyncCallback<${type.name}Proxy> callback);
+#end
+#end
+}

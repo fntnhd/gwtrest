@@ -1,0 +1,29 @@
+package ${context.getProperty("namespace")}.server.service;
+
+import ${context.getProperty("namespace")}.server.entity.*;
+import ${context.getProperty("namespace")}.server.validate.*;
+import java.util.List;
+
+public interface ${type.name} {
+#foreach($op in $type.operations)
+
+    /**
+#if(${util.isBlank(${op.documentation})})
+     * ${op.name}
+#else
+     * ${op.documentation}
+#end
+#foreach($p in ${op.parameters})
+     * @param ${p.name}
+#end
+#if(!${op.getReturnType().equals("void")})
+     * @return ${op.returnType}
+#end
+#foreach($p in ${op.parameters})
+     * @see ${p.type}
+#end
+     */
+    public #parse("server.service.op.return.vm") ${op.name}(#parse("server.service.op.signature.vm")) throws ValidationException;
+#end
+
+}

@@ -1,0 +1,123 @@
+package ${context.getProperty("namespace")}.client.entity;
+
+#if(${util.isBlank(${type.getGeneralization()})})
+import com.google.gwt.core.client.JavaScriptObject;
+#end
+#if(${type.hasMany()})
+import com.google.gwt.core.client.JsArray;
+#end
+#if(${util.isBlank(${type.getGeneralization()})})
+
+public class ${type.name} extends JavaScriptObject {
+#else
+
+public class ${type.name} extends ${type.getGeneralization().getName()} {
+#end
+
+    protected ${type.name}() {}
+#if(${util.isBlank(${type.getGeneralization()})})
+
+    public final native String getId() /*-{
+    return this.id; 
+    }-*/;
+#end
+#foreach($p in ${type.properties})
+       
+    public final native ${p.type} get${util.capitalize(${p.name})}() /*-{
+    return this.${p.name};
+    }-*/;
+    
+    public final native void set${util.capitalize(${p.name})}(${p.type} ${p.name}) /*-{
+    this.${p.name} = ${p.name};
+    }-*/;
+    
+#end
+#foreach($assn in ${type.getOneToMany()})
+#if(${assn.isOwner()})
+
+    /**
+     * Get the ${assn.name}List of the ${type.name}
+     * @return ${assn.name}List
+     * @see ${assn.entity.name}
+     */
+    public final native JsArray<${assn.entity.name}> get${util.capitalize(${assn.name})}List() /*-{
+    return this.${assn.name}List;
+    }-*/;
+
+    /**
+     * Set the ${assn.name}List of the ${type.name}
+     * @param ${assn.name}List The ${assn.name} list
+     * @see ${assn.entity.name}
+     */
+    public final native void set${util.capitalize(${assn.name})}List(JsArray<${assn.entity.name}> ${assn.name}List) /*-{
+    this.${assn.name}List = ${assn.name}List;
+    }-*/;
+#else
+
+    /**
+     * Get the ${assn.name} of the ${type.name}
+     * @return ${assn.name}
+     * @see ${assn.entity.name}
+     */
+    public final native ${assn.entity.name} get${util.capitalize(${assn.name})}() /*-{
+    return this.${assn.name};
+    }-*/;
+
+    /**
+     * Set the ${assn.name} of the ${type.name}
+     * @param ${assn.name} The ${assn.name}
+     * @see ${assn.entity.name}
+     */
+    public final native void set${util.capitalize(${assn.name})}(${assn.entity.name} ${assn.name}) /*-{
+    this.${assn.name} = ${assn.name};
+    }-*/;
+#end
+#end
+#foreach($assn in ${type.getManyToOne()})
+
+    /**
+     * Get the ${assn.name} of the ${type.name}
+     * @return ${assn.name}
+     * @see ${assn.entity.name}
+     */
+    public final native ${assn.entity.name} get${util.capitalize(${assn.name})}() /*-{
+    return this.${assn.name};
+    }-*/;
+
+    /**
+     * Set the ${assn.name} of the ${type.name}
+     * @param ${assn.name} The ${assn.name}
+     * @see ${assn.entity.name}
+     */
+    public final native void set${util.capitalize(${assn.name})}(${assn.entity.name} ${assn.name}) /*-{
+    this.${assn.name} = ${assn.name};
+    }-*/;
+#end
+#foreach($assn in ${type.getManyToMany()})
+
+    /**
+     * Get the ${assn.name}List of the ${type.name}
+     * @return ${assn.name}List
+     * @see ${assn.entity.name}
+     */
+    public final native JsArray<${assn.entity.name}> get${util.capitalize(${assn.name})}List() /*-{
+    return ${assn.name}List;
+    }-*/;
+
+    /**
+     * Set the ${assn.name}List of the ${type.name}
+     * @param ${assn.name}List The ${assn.name} list
+     * @see ${assn.entity.name}
+     */
+    public final native void set${util.capitalize(${assn.name})}List(JsArray<${assn.entity.name}> ${assn.name}List) /*-{
+    this.${assn.name}List = ${assn.name}List;
+    }-*/;
+#end
+#if(${util.isBlank(${type.getGeneralization()})})
+
+    public final native String json() /*-{
+    return JSON.stringify(this);
+    }-*/;
+#end
+}
+

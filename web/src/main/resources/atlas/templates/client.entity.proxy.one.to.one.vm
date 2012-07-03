@@ -1,0 +1,23 @@
+#foreach($ass in ${type.getOneToOne()})
+
+    /**
+     * Get the ${ass.name} of the ${type.name}
+     * @return ${ass.name}
+     * @see ${ass.entity.name}Proxy
+     */
+    public ${ass.entity.name}Proxy get${util.capitalize(${ass.name})}() {
+        return ${ass.name};
+    }
+
+    /**
+     * Set the ${ass.name} of the ${type.name}
+     * @param ${ass.name} The ${ass.name}
+     * @see ${ass.entity.name}Proxy
+     */
+    public void set${util.capitalize(${ass.name})}(${ass.entity.name}Proxy ${ass.name}) {
+        this.${ass.name} = ${ass.name};
+#if(${ass.isOwner()})
+        ${ass.name}.set${util.capitalize(${ass.role})}(this);
+#end
+    }
+#end

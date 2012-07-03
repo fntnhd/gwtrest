@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+        <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+        <META HTTP-EQUIV="Expires" CONTENT="-1">
+        <title>Partners CME Course Proposal Submission</title>
+        <link href="styles/style.css" rel="stylesheet" type="text/css" />
+        <link href="styles/popup.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" language="javascript" src="cps/cps.nocache.js"></script>
+    </head>
+
+    <body>    
+        <script type="text/javascript" language="javascript">
+            var Vars = {
+                view: "${type.name}"
+            };
+        </script>    
+
+        <div id="topbar_wrapper">
+            <div class="logo">&nbsp;</div>
+        </div>
+
+
+        <div id="topgray_wrapper">
+            <div class="floatleft"></div>
+            
+        </div>
+
+        <div id="messages"></div>
+
+        <div id="main_content">
+            <br/>
+#foreach($p in ${type.properties})
+
+            ${p.name} #if(${p.hasTag("required")})<span class="field-required">*</span>#end
+            <div id="${type.name}-${p.name}"></div>
+            <div id="${type.name}-${p.name}-message"></div><br/>
+#end
+#foreach($op in ${type.operations})
+
+            <div id="${type.name}-${op.name}"></div>
+#end
+
+        <!-- Put main content here -->
+
+
+        </div>
+
+        <div id="footer_content">
+        </div>
+    </body>
+</html>

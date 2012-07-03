@@ -1,0 +1,160 @@
+package ${context.getProperty("namespace")}.server.entity.impl;
+
+import ${context.getProperty("namespace")}.server.entity.*;
+import ${context.getProperty("namespace")}.server.message.*;
+import ${context.getProperty("namespace")}.server.validate.*;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+@Repository
+@Transactional
+public class ${type.name}DAOImpl implements ${type.name}DAO {
+
+    @PersistenceContext(unitName = "${target.getProperty("persistence.unit")}")
+    private EntityManager em;
+
+    /**
+     * findAll${type.name}
+     * @return ${type.name}
+     */
+    @Override
+    public List<${type.name}> findAll() throws ValidationException {
+        Query q = em.createNamedQuery(${type.name}.FIND_ALL_${util.upperCase(${type.name})});
+        return q.getResultList();
+    }
+
+
+    /**
+     * Find a ${type.name} by id
+     * @return ${type.name}
+     */
+    @Override
+    public ${type.name} findById(Long id) throws ValidationException {
+        Query q = em.createNamedQuery(${type.name}.FIND_${util.upperCase(${type.name})}_BY_ID);
+        q.setParameter("id", id);
+        List<${type.name}> list = q.getResultList();
+
+        if(list.isEmpty()) {
+            return null;
+        }
+        else {
+            return list.get(0);
+        }
+    }
+
+    /**
+     * Create a ${type.name}
+     * @return ${type.name}
+     */
+    @Override
+    public ${type.name} create(${type.name} ${util.uncapitalize(${type.name})}) throws ValidationException {
+        ${util.uncapitalize(${type.name})}.clearErrors();
+#if(${type.hasTag("businessKey")})
+#set($businessKey = ${type.getTagValue("businessKey")})
+
+        ${type.name} dup = findBy${util.capitalize($businessKey)}(${util.uncapitalize(${type.name})}.get${util.capitalize($businessKey)}());
+        if(dup != null && (${util.uncapitalize(${type.name})}.getId() == null || ! ${util.uncapitalize(${type.name})}.getId().equals(dup.getId()))) {
+            ValidationError err = new ValidationError(MessageFormatter.format(ErrorMessages.DUPLICATE, new String[] {"${util.lowerCase(${util.addSpacerToCamelCase($businessKey, " ")})}"}));
+            throw new ValidationException(err);
+        }
+#end
+
+        ${util.uncapitalize(${type.name})}.validate();
+
+        if(${util.uncapitalize(${type.name})}.hasErrors()) {
+            ValidationException ex = new ValidationException();
+            for(ValidationError ae : ${util.uncapitalize(${type.name})}.getErrors()) {
+                ex.addError(ae);
+            }
+
+            throw ex;
+        }
+
+        em.persist(${util.uncapitalize(${type.name})});
+
+        return ${util.uncapitalize(${type.name})};
+    }
+
+    /**
+     * Update a ${type.name}
+     * @return ${type.name}
+     */
+    @Override
+    public ${type.name} update(${type.name} ${util.uncapitalize(${type.name})}) throws ValidationException {
+        ${util.uncapitalize(${type.name})}.clearErrors();
+
+        if(${util.uncapitalize(${type.name})}.getId() == null || findById(${util.uncapitalize(${type.name})}.getId()) == null) {
+            ValidationError err = new ValidationError("Attempt to update non-existent entity");
+            throw new ValidationException(err);
+        }
+#if(${type.hasTag("businessKey")})
+#set($businessKey = ${type.getTagValue("businessKey")})
+
+        ${type.name} dup = findBy${util.capitalize($businessKey)}(${util.uncapitalize(${type.name})}.get${util.capitalize($businessKey)}());
+        if(dup != null && (${util.uncapitalize(${type.name})}.getId() == null || ! ${util.uncapitalize(${type.name})}.getId().equals(dup.getId()))) {
+            ValidationError err = new ValidationError(MessageFormatter.format(ErrorMessages.DUPLICATE, new String[] {"${util.lowerCase(${util.addSpacerToCamelCase($businessKey, " ")})}"}));
+            throw new ValidationException(err);
+        }
+#end
+
+        ${util.uncapitalize(${type.name})}.validate();
+
+        if(${util.uncapitalize(${type.name})}.hasErrors()) {
+            ValidationException ex = new ValidationException();
+            for(ValidationError ae : ${util.uncapitalize(${type.name})}.getErrors()) {
+                ex.addError(ae);
+            }
+
+            throw ex;
+        }
+
+        em.merge(${util.uncapitalize(${type.name})});
+
+        return ${util.uncapitalize(${type.name})};
+    }
+
+    /**
+     * Delete a ${type.name}
+     */
+    @Override
+    public ${type.name} delete(Long id) throws ValidationException {
+        ${type.name} e = findById(id);
+        em.remove(e);
+        return e;
+    }
+
+
+    /**
+     * Delete all ${type.name}
+     */
+    @Override
+    public void deleteAll() throws ValidationException {
+        Query q = em.createQuery("delete from ${type.name}");
+        q.executeUpdate();
+    }
+#if(${type.hasTag("businessKey")})
+#set($businessKey = ${type.getTagValue("businessKey")})
+
+    /**
+     * Finds a ${type.name} by $businessKey
+     * @return ${type.name}
+     */
+    @Override
+    public ${type.name} find${type.name}By${util.capitalize($businessKey)}(#if(${type.hasTag("businessKeyType")}) ${type.getTagValue("businessKeyType")}#else String#end $businessKey) throws ValidationException {
+        Query q = em.createQuery("select e from ${type.name} e where e.$businessKey = :$businessKey");
+        q.setParameter("$businessKey", $businessKey);
+        List<${type.name}> list = q.getResultList();
+
+        if(list.isEmpty()) {
+            return null;
+        }
+        else {
+            return list.get(0);
+        }
+    }
+#end
+}

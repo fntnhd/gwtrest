@@ -1,0 +1,51 @@
+package ${context.getProperty("namespace")}.client.service;
+
+import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import ${context.getProperty("namespace")}.client.entity.*;
+import ${context.getProperty("namespace")}.client.validate.ClientValidationException;
+import java.util.List;
+
+@RemoteServiceRelativePath("${util.uncapitalize(${type.name})}DataService")
+public interface ${type.name}DataServiceRemote extends RemoteService {
+#if(! ${type.isAbstractEntity()} )
+
+
+    /**
+     * Find All ${type.name}
+     * @return List<${type.name}Proxy>
+     */
+    public List<${type.name}Proxy> findAll${type.name}() throws ClientValidationException;
+
+
+    /**
+     * Find ${type.name} By Id
+     * @return ${type.name}
+     */
+    public ${type.name}Proxy find${type.name}ById(Long id) throws ClientValidationException;
+
+
+    /**
+     * Save ${type.name}
+     * @return ${type.name}Proxy
+     */
+    public ${type.name}Proxy save${type.name}(${type.name}Proxy ${util.uncapitalize(${type.name})}) throws ClientValidationException;
+
+
+    /**
+     * Delete ${type.name}
+     */
+    public void delete${type.name}(Long id) throws ClientValidationException;
+#if(${type.hasTag("businessKey")})
+#set($businessKey = ${type.getTagValue("businessKey")})
+
+
+    /**
+     * Finds a ${type.name} by $businessKey
+     * @return ${type.name}
+     */
+    public ${type.name}Proxy find${type.name}By${util.capitalize($businessKey)}(String $businessKey) throws ClientValidationException;
+#end
+#end
+
+}

@@ -1,0 +1,9 @@
+
+<tags>
+    <entity name="User">
+        <tag name="inheritance" value="joined"/> 
+        <property name="username">
+            <tag name="required" value="true"/>
+        </property>
+    </entity>    
+</tags>

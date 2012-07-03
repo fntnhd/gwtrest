@@ -1,0 +1,21 @@
+package ${context.getProperty("namespace")}.client;
+
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.i18n.client.Dictionary;
+
+/**
+ * Entry point classes define <code>onModuleLoad()</code>.
+ */
+public class ${target.getProperty("entry.point")} implements EntryPoint {
+
+    /**
+     * This is the entry point method.
+     */
+    public void onModuleLoad() {
+        Dictionary d = Dictionary.getDictionary("Vars");
+        String view = d.get("view");
+
+        ViewFactory.createView(view);
+    }
+
+}

@@ -1,0 +1,10 @@
+package ${context.getProperty("namespace")}.server.transfer;
+
+import ${context.getProperty("namespace")}.server.entity.*;
+import ${context.getProperty("namespace")}.client.entity.*;
+
+
+public class ${type.name}Transfer #if(!${util.isBlank(${type.getGeneralization().getName()})}) extends ${type.getGeneralization().getName()}Transfer #end implements Transfer {
+#parse("entity.transfer.to.vm")
+#parse("entity.transfer.from.vm")
+}

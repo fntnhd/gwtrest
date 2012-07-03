@@ -1,0 +1,23 @@
+package ${context.getProperty("namespace")}.server.transfer;
+
+import ${context.getProperty("namespace")}.client.entity.*;
+import ${context.getProperty("namespace")}.client.entity.Proxy;
+import ${context.getProperty("namespace")}.server.entity.*;
+
+/**
+ *
+ */
+public final class EntityFactory {
+    
+    public static AbstractEntity createEntity(Proxy proxy) {
+        return null;
+    }
+#foreach($e in $types)
+#if(! ${e.isAbstractEntity()})
+    public static AbstractEntity createEntity(${e.name}Proxy proxy) {
+        return new ${e.name}();
+    }
+#end
+#end
+    
+}

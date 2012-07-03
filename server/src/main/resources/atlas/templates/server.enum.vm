@@ -1,0 +1,10 @@
+package ${context.getProperty("namespace")}.server.entity;
+
+public enum ${type.name} {
+
+#foreach($literal in $type.literals)
+    ${literal.name}#if($velocityHasNext),
+#end
+#end
+
+}

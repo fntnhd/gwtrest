@@ -1,0 +1,69 @@
+
+    @Override
+    public void transferFromProxy(Proxy proxy, AbstractEntity entity) {
+        ${type.name}Proxy ${util.uncapitalize(${type.name})}Proxy = (${type.name}Proxy) proxy;
+        ${type.name} ${util.uncapitalize(${type.name})} = (${type.name}) entity;
+#if(! ${util.isBlank(${type.getGeneralization().getName()})})
+        super.transferFromProxy(${util.uncapitalize(${type.name})}Proxy, ${util.uncapitalize(${type.name})});
+#end
+
+#if(! ${type.hasTag("transient")})
+        ${util.uncapitalize(${type.name})}.setId(${util.uncapitalize(${type.name})}Proxy.getId());
+#end
+#foreach($p in ${type.properties})
+#if(${p.hasTag("input")})
+#if(${p.getTagValue("input").equals("date")})
+        ${util.uncapitalize(${type.name})}.set${util.capitalize(${p.name})}(DateUtil.getDate(${util.uncapitalize(${type.name})}Proxy.get${util.capitalize(${p.name})}Month(), ${util.uncapitalize(${type.name})}Proxy.get${util.capitalize(${p.name})}Day(), ${util.uncapitalize(${type.name})}Proxy.get${util.capitalize(${p.name})}Year()));
+#elseif(${p.getTagValue("input").equals("phone")})
+        ${util.uncapitalize(${type.name})}.set${util.capitalize(${p.name})}(PhoneUtil.getPhone(${util.uncapitalize(${type.name})}Proxy.get${util.capitalize(${p.name})}1(), ${util.uncapitalize(${type.name})}Proxy.get${util.capitalize(${p.name})}2(), ${util.uncapitalize(${type.name})}Proxy.get${util.capitalize(${p.name})}3()));
+#end
+#elseif(${model.isEnumeration(${p.type})})
+        if (${util.uncapitalize(${type.name})}Proxy.get${util.capitalize(${p.name})}() != null) {
+            ${util.uncapitalize(${type.name})}.set${util.capitalize(${p.name})}(${p.type}.valueOf(${util.uncapitalize(${type.name})}Proxy.get${util.capitalize(${p.name})}().toString()));
+        }
+#else
+        ${util.uncapitalize(${type.name})}.set${util.capitalize(${p.name})}(${util.uncapitalize(${type.name})}Proxy.get${util.capitalize(${p.name})}());
+#end
+#end
+#foreach($ass in ${type.getOneToMany()})
+#if(${ass.isOwner()})
+
+        for(${ass.entity.name}Proxy ${util.uncapitalize(${ass.name})}Proxy : ${util.uncapitalize(${type.name})}Proxy.get${util.capitalize(${ass.name})}List()) {
+            AbstractEntity ${util.uncapitalize(${ass.name})} = EntityFactory.entity(${util.uncapitalize(${ass.name})}Proxy);
+            ${util.uncapitalize(${type.name})}.add${util.capitalize(${ass.name})}((${ass.entity.name}) ${util.uncapitalize(${ass.name})});
+        }
+#else
+   
+        if (${util.uncapitalize(${type.name})}.get${util.capitalize(${ass.name})}() == null && ${util.uncapitalize(${type.name})}Proxy.get${util.capitalize(${ass.name})}() != null) {
+            ${ass.entity.name} ${ass.name} = new ${ass.entity.name}();
+            ${ass.name}.setId(${util.uncapitalize(${type.name})}Proxy.get${util.capitalize(${ass.name})}().getId());
+            ${util.uncapitalize(${type.name})}.set${util.capitalize(${ass.name})}(${ass.name});
+        }
+#end
+#end
+#foreach($ass in ${type.getManyToMany()})
+#if(${ass.isOwner()})
+
+        for(${ass.entity.name}Proxy ${util.uncapitalize(${ass.name})}Proxy : ${util.uncapitalize(${type.name})}Proxy.get${util.capitalize(${ass.name})}List()) {
+            AbstractEntity ${util.uncapitalize(${ass.name})} = EntityFactory.entity(${util.uncapitalize(${ass.name})}Proxy);
+            ${util.uncapitalize(${type.name})}.add${util.capitalize(${ass.name})}((${ass.entity.name}) ${util.uncapitalize(${ass.name})});
+        }
+#end
+#end
+#foreach($ass in ${type.getManyToOne()})
+
+        if(${util.uncapitalize(${type.name})}Proxy.get${util.capitalize(${ass.name})}() != null) {
+            AbstractEntity ${util.uncapitalize(${ass.name})} = EntityFactory.entity(${util.uncapitalize(${type.name})}Proxy.get${util.capitalize(${ass.name})}());
+            ${util.uncapitalize(${type.name})}.set${util.capitalize(${ass.name})}((${ass.entity.name}) ${util.uncapitalize(${ass.name})});
+        }
+#end
+#foreach($ass in ${type.getOneToOne()})
+#if(${ass.isOwner()})
+
+        if(${util.uncapitalize(${type.name})}Proxy.get${util.capitalize(${ass.name})}() != null) {
+            AbstractEntity ${util.uncapitalize(${ass.name})} = EntityFactory.entity(${util.uncapitalize(${type.name})}Proxy.get${util.capitalize(${ass.name})}());
+            ${util.uncapitalize(${type.name})}.set${util.capitalize(${ass.name})}((${ass.entity.name}) ${util.uncapitalize(${ass.name})});
+        }
+#end
+#end
+    }

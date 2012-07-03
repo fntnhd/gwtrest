@@ -1,0 +1,52 @@
+package ${context.getProperty("namespace")}.client.ui;
+
+#foreach($p in ${type.properties})
+#if(${p.hasTag("choices")})
+#set($hasDefinedChoices="true")
+#end
+#end
+#if($hasDefinedChoices.equals("true"))
+import java.util.Map;
+import java.util.HashMap;
+#end
+
+/**
+ * ${type.name}
+ */
+public class ${type.name} extends ${type.name}Base {
+#if(${type.properties.size()} == 0 && ${type.operations.size()} == 0)
+
+    @Override
+    protected void setupWidgets() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    protected void layoutWidgets() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+#end
+#if(${type.operations.size().equals(0)})
+
+    @Override
+    protected void setupWidgetEvents() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+#else
+#foreach($o in ${type.operations})
+
+    @Override
+    protected void ${o.name}() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+#end
+#end
+#foreach($p in ${type.properties})
+#if(${p.hasTag("choices")})
+
+    protected Map<String,String> ${p.getTagValue("choices")}() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+#end
+#end
+}

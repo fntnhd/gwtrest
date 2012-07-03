@@ -1,0 +1,19 @@
+package ${context.getProperty("namespace")}.server;
+
+/**
+ *
+ */
+public interface SessionConstants {
+
+    public static final String UNSECURED_USER = "UNSECURED_USER";
+    public static final String LOGIN_MESSAGE = "LOGIN_MESSAGE";
+    public static final String REQUEST_URL = "REQUEST_URL";
+    public static final String SUBSCRIPTION_TYPES = "SUBSCRIPTION_TYPES";
+
+#foreach($e in $types)
+#if(! ${e.getName().equals("User")})
+    public static final String ${util.addSpacerToCamelCaseUpper(${e.name}, "_")} = "${e.name}";
+#end
+#end
+
+}

@@ -1,0 +1,241 @@
+package ${context.getProperty("namespace")}.client.service;
+
+import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsonUtils;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
+import ${context.getProperty("namespace")}.client.entity.${type.name};
+
+/**
+ * Responsible for invoking the ${type.name} REST service and handling async callbacks.
+ * 
+ */
+public class ${type.name}EntityServiceClient extends EntityServiceClient {
+
+    private static final String ${util.addSpacerToCamelCaseUpper(${type.name}, "_")} = "${util.uncapitalize(${type.name})}";
+
+    @Override
+    protected String entity() {
+        return ${util.addSpacerToCamelCaseUpper(${type.name}, "_")};
+    }
+
+    public void findById(String id, final FindById caller) {
+        RequestBuilder request = findByIdRequest(id);
+
+        try {
+            request.sendRequest(null, new RequestCallback() {
+
+                @Override
+                public void onResponseReceived(Request request, Response response) {
+                    int statusCode = response.getStatusCode();
+
+                    if (statusCode == Response.SC_OK) {
+                        String responseBody = response.getText();
+
+                        try {
+                            ${type.name} ${util.uncapitalize(${type.name})} = JsonUtils.safeEval(responseBody);
+                            caller.onFind${type.name}ByIdResponse(${util.uncapitalize(${type.name})});
+                        } catch (Throwable exception) {
+                            caller.onFind${type.name}ByIdError(exception);
+                        }
+                    } else {
+                        //do in case of server error
+                    }
+                }
+
+                @Override
+                public void onError(Request request, Throwable exception) {
+                    caller.onFind${type.name}ByIdError(exception);
+                }
+            });
+        } catch (RequestException ex) {
+            caller.onFind${type.name}ByIdError(ex);
+        }
+    }
+
+    /**
+     * Callers must implement this interface to handle the callback
+     */
+    public interface FindById {
+
+        public void onFind${type.name}ByIdResponse(${type.name} ${util.uncapitalize(${type.name})});
+
+        public void onFind${type.name}ByIdError(Throwable exception);
+    }
+
+    public void findAll(final FindAll caller) {
+        RequestBuilder request = findAllRequest();
+
+        try {
+            Request response = request.sendRequest(null, new RequestCallback() {
+
+                @Override
+                public void onResponseReceived(Request request, Response response) {
+                    int statusCode = response.getStatusCode();
+
+                    if (statusCode == Response.SC_OK) {
+                        String responseBody = response.getText();
+
+                        try {
+                            JsArray<${type.name}> ${util.uncapitalize(${type.name})}List = JsonUtils.safeEval(responseBody);
+                            caller.onFindAll${type.name}Response(${util.uncapitalize(${type.name})}List);
+                        } catch (Throwable exception) {
+                            caller.onFindAll${type.name}Error(exception);
+                        }
+                    } else {
+                        //do in case of server error
+                    }
+                }
+
+                @Override
+                public void onError(Request request, Throwable exception) {
+                    caller.onFindAll${type.name}Error(exception);
+                }
+            });
+        } catch (RequestException ex) {
+            caller.onFindAll${type.name}Error(ex);
+        }
+    }
+
+    /**
+     * Callers must implement this interface to handle the callback
+     */
+    public interface FindAll {
+
+        public void onFindAll${type.name}Response(JsArray<${type.name}> ${util.uncapitalize(${type.name})}List);
+
+        public void onFindAll${type.name}Error(Throwable exception);
+    }
+
+    public void add(${type.name} ${util.uncapitalize(${type.name})}, final Add caller) {
+        RequestBuilder builder = addRequest();
+
+        try {
+            Request response = builder.sendRequest(${util.uncapitalize(${type.name})}.json(), new RequestCallback() {
+
+                @Override
+                public void onResponseReceived(Request request, Response response) {
+                    int statusCode = response.getStatusCode();
+
+                    if (statusCode == Response.SC_OK) {
+                        try {
+                            String responseBody = response.getText();
+                            ${type.name} p = JsonUtils.safeEval(responseBody);
+                            caller.onAdd${type.name}Response(p);
+                        } catch (Throwable exception) {
+                            caller.onAdd${type.name}Error(exception);
+                        }
+                    } else {
+                        //do in case of server error
+                    }
+                }
+
+                @Override
+                public void onError(Request request, Throwable exception) {
+                    caller.onAdd${type.name}Error(exception);
+                }
+            });
+        } catch (RequestException ex) {
+            caller.onAdd${type.name}Error(ex);
+        }
+    }
+
+    /**
+     * Callers must implement this interface to handle the callback
+     */
+    public interface Add {
+
+        public void onAdd${type.name}Response(${type.name} ${util.uncapitalize(${type.name})});
+
+        public void onAdd${type.name}Error(Throwable exception);
+    }
+
+    public void update(${type.name} ${util.uncapitalize(${type.name})}, final Update caller) {
+        RequestBuilder request = updateRequest(${util.uncapitalize(${type.name})}.getId());
+
+        try {
+            Request response = request.sendRequest(${util.uncapitalize(${type.name})}.json(), new RequestCallback() {
+
+                @Override
+                public void onResponseReceived(Request request, Response response) {
+                    int statusCode = response.getStatusCode();
+
+                    if (statusCode == Response.SC_OK) {
+                        try {
+                            String responseBody = response.getText();
+                            ${type.name} p = JsonUtils.safeEval(responseBody);
+                            caller.onUpdate${type.name}Response(p);
+                        } catch (Throwable exception) {
+                            caller.onUpdate${type.name}Error(exception);
+                        }
+                    } else {
+                        //do in case of server error
+                    }
+                }
+
+                @Override
+                public void onError(Request request, Throwable exception) {
+                    caller.onUpdate${type.name}Error(exception);
+                }
+            });
+        } catch (RequestException ex) {
+            caller.onUpdate${type.name}Error(ex);
+        }
+    }
+
+    /**
+     * Callers must implement this interface to handle the callback
+     */
+    public interface Update {
+
+        public void onUpdate${type.name}Response(${type.name} ${util.uncapitalize(${type.name})});
+
+        public void onUpdate${type.name}Error(Throwable exception);
+    }
+
+    public void delete(${type.name} ${util.uncapitalize(${type.name})}, final Delete caller) {
+        RequestBuilder builder = deleteRequest(${util.uncapitalize(${type.name})}.getId());
+
+        try {
+            Request response = builder.sendRequest(${util.uncapitalize(${type.name})}.json(), new RequestCallback() {
+
+                @Override
+                public void onResponseReceived(Request request, Response response) {
+                    int statusCode = response.getStatusCode();
+
+                    if (statusCode == Response.SC_OK) {
+                        try {
+                            String responseBody = response.getText();
+                            ${type.name} p = JsonUtils.safeEval(responseBody);
+                            caller.onDelete${type.name}Response(p);
+                        } catch (Throwable exception) {
+                            caller.onDelete${type.name}Error(exception);
+                        }
+                    } else {
+                        //do in case of server error
+                    }
+                }
+
+                @Override
+                public void onError(Request request, Throwable exception) {
+                    caller.onDelete${type.name}Error(exception);
+                }
+            });
+        } catch (RequestException ex) {
+            caller.onDelete${type.name}Error(ex);
+        }
+    }
+
+    /**
+     * Callers must implement this interface to handle the callback
+     */
+    public interface Delete {
+
+        public void onDelete${type.name}Response(${type.name} ${util.uncapitalize(${type.name})});
+
+        public void onDelete${type.name}Error(Throwable exception);
+    }
+}

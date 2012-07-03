@@ -1,0 +1,35 @@
+package ${context.getProperty("namespace")}.server.service.impl;
+
+import ${context.getProperty("namespace")}.server.entity.*;
+import ${context.getProperty("namespace")}.server.service.${type.name};
+import ${context.getProperty("namespace")}.server.validate.*;
+import org.springframework.stereotype.Service;
+import java.util.List;
+
+@Service
+public class ${type.name}Impl implements ${type.name} {
+#foreach($op in $type.operations)
+
+    /**
+#if(${util.isBlank(${op.documentation})})
+     * ${op.name}
+#else
+     * ${op.documentation}
+#end
+#foreach($p in ${op.parameters})
+     * @param ${p.name}
+#end
+#if(!${op.getReturnType().equals("void")})
+     * @return ${op.returnType}
+#end
+#foreach($p in ${op.parameters})
+     * @see ${p.type}
+#end
+     */
+    @Override
+    public #parse("server.service.op.return.vm") ${op.name}(#parse("server.service.op.signature.vm")) throws ValidationException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+#end
+
+}

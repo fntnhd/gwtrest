@@ -1,0 +1,58 @@
+package ${context.getProperty("namespace")}.server.service;
+
+import ${context.getProperty("namespace")}.client.entity.*;
+import ${context.getProperty("namespace")}.server.security.SecuredUser;
+import ${context.getProperty("namespace")}.client.service.SessionServiceRemote;
+import ${context.getProperty("namespace")}.server.SessionConstants;
+import ${context.getProperty("namespace")}.server.transfer.ProxyFactory;
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.util.List;
+
+public class SessionServiceServlet extends RemoteServiceServlet implements SessionServiceRemote {
+
+    /**
+     * Get the current secured user
+     */
+    @Override
+    public UserProxy getUser() {    
+        UserProxy proxy = null;
+        SecuredUser securedUser = (SecuredUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(securedUser != null) {
+            proxy = (UserProxy) ProxyFactory.proxy(securedUser.getUser());
+        }
+
+        return proxy;
+    }
+
+    /**
+     * Get the current unsecured user.  Used for purposes such as registering new users.
+     */
+    @Override
+    public UserProxy getUnsecuredUser() {
+        return (UserProxy) getThreadLocalRequest().getSession().getAttribute("UNSECURED_USER");
+    }
+    
+    @Override
+    public String getLoginMessage() {
+        return getThreadLocalRequest().getSession().getAttribute("LOGIN_MESSAGE") != null ? 
+               (String)getThreadLocalRequest().getSession().getAttribute("LOGIN_MESSAGE") :
+               null;
+    }
+
+    @Override
+    public String getRequestUrl() {
+        return (String) getThreadLocalRequest().getSession().getAttribute("REQUEST_URL");
+    }
+
+#foreach($e in $types)
+#if(! ${e.getName().equals("User")})
+
+    @Override
+    public ${e.name}Proxy get${e.name}() {
+        return (${e.name}Proxy) getThreadLocalRequest().getSession().getAttribute(SessionConstants.${util.addSpacerToCamelCaseUpper(${e.name}, "_")});
+    }
+#end
+#end
+}

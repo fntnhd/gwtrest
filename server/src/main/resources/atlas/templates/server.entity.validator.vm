@@ -1,0 +1,12 @@
+package ${context.getProperty("namespace")}.server.entity;
+
+/**
+ * Validator for ${type.name} instances.
+ */
+public final class ${type.name}Validator {
+
+    public static void validate(${type.name} ${util.uncapitalize(${type.name})}) {
+
+    }
+
+}
