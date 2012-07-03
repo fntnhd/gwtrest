@@ -1,0 +1,155 @@
+package com.us.fountainhead.gwtrest.server.service.rest;
+
+import ${context.getProperty("namespace")}.server.entity.${type.name};
+import ${context.getProperty("namespace")}.server.entity.${type.name}DAO;
+import ${context.getProperty("namespace")}.server.validate.ValidationException;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+/**
+ * Responsible for managing ${type.name} CRUD operations
+ */
+@Controller
+public class ${type.name}EntityService {
+    
+    private static final String JSON = "Accept=application/json";
+
+    @Autowired
+    ${type.name}DAO dao;
+
+    @RequestMapping(method = RequestMethod.GET, value = "/${util.uncapitalize(${type.name})}/findById/{id}", headers = JSON)
+    public @ResponseBody
+    FindByIdResponse findById(@PathVariable Long id) {
+        FindByIdResponse response = new FindByIdResponse();
+
+        try {
+            response.set${type.name}(dao.findById(id));
+        } catch (ValidationException ex) {
+            response.setErrorList(ex.getErrors());
+        }
+
+        return response;
+    }
+
+    public class FindByIdResponse extends ServiceResponse {
+
+        private ${type.name} ${util.uncapitalize(${type.name})};
+
+        public void set${type.name}(${type.name} ${util.uncapitalize(${type.name})}) {
+            this.${util.uncapitalize(${type.name})} = ${util.uncapitalize(${type.name})};
+        }
+
+        public ${type.name} get${type.name}() {
+            return ${util.uncapitalize(${type.name})};
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/${util.uncapitalize(${type.name})}/findAll", headers = JSON)
+    public @ResponseBody
+    FindAllResponse findAll() {
+        FindAllResponse response = new FindAllResponse();
+
+        try {
+            response.set${type.name}List(dao.findAll());
+        } catch (ValidationException ex) {
+            response.setErrorList(ex.getErrors());
+        }
+
+        return response;
+    }
+
+    public class FindAllResponse extends ServiceResponse {
+
+        private List<${type.name}> ${util.uncapitalize(${type.name})}List;
+
+        public void set${type.name}List(List<${type.name}> ${util.uncapitalize(${type.name})}List) {
+            this.${util.uncapitalize(${type.name})}List = ${util.uncapitalize(${type.name})}List;
+        }
+
+        public List<${type.name}> get${type.name}List() {
+            return ${util.uncapitalize(${type.name})}List;
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/${util.uncapitalize(${type.name})}/create", headers = JSON)
+    public @ResponseBody
+    CreateResponse create(@RequestBody ${type.name} ${util.uncapitalize(${type.name})}) {
+        CreateResponse response = new CreateResponse();
+
+        try {
+            response.set${type.name}(dao.create(${util.uncapitalize(${type.name})}));
+        } catch (ValidationException ex) {
+            response.setErrorList(ex.getErrors());
+        }
+
+        return response;
+    }
+
+    public class CreateResponse extends ServiceResponse {
+
+        private ${type.name} ${util.uncapitalize(${type.name})};
+
+        public void set${type.name}(${type.name} ${util.uncapitalize(${type.name})}) {
+            this.${util.uncapitalize(${type.name})} = ${util.uncapitalize(${type.name})};
+        }
+
+        public ${type.name} get${type.name}() {
+            return ${util.uncapitalize(${type.name})};
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/${util.uncapitalize(${type.name})}/update", headers = JSON)
+    public @ResponseBody
+    UpdateResponse update(@RequestBody ${type.name} ${util.uncapitalize(${type.name})}) {
+        UpdateResponse response = new UpdateResponse();
+
+        try {
+            response.set${type.name}(dao.update(${util.uncapitalize(${type.name})}));
+        } catch (ValidationException ex) {
+            response.setErrorList(ex.getErrors());
+        }
+
+        return response;
+    }
+
+    public class UpdateResponse extends ServiceResponse {
+
+        private ${type.name} ${util.uncapitalize(${type.name})};
+
+        public void set${type.name}(${type.name} ${util.uncapitalize(${type.name})}) {
+            this.${util.uncapitalize(${type.name})} = ${util.uncapitalize(${type.name})};
+        }
+
+        public ${type.name} get${type.name}() {
+            return ${util.uncapitalize(${type.name})};
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/${util.uncapitalize(${type.name})}/delete/{id}", headers = JSON)
+    public @ResponseBody
+    DeleteResponse delete(@PathVariable Long id) {
+        DeleteResponse response = new DeleteResponse();
+        try {
+            response.set${type.name}(dao.delete(id));
+        } catch (ValidationException ex) {
+            response.setErrorList(ex.getErrors());
+        }
+
+        return response;
+    }
+
+    public class DeleteResponse extends ServiceResponse {
+
+        private ${type.name} ${util.uncapitalize(${type.name})};
+
+        public void set${type.name}(${type.name} ${util.uncapitalize(${type.name})}) {
+            this.${util.uncapitalize(${type.name})} = ${util.uncapitalize(${type.name})};
+        }
+
+        public ${type.name} get${type.name}() {
+            return ${util.uncapitalize(${type.name})};
+        }
+    }
+}

@@ -1,4 +1,4 @@
-package com.us.fountainhead.gwtrest.server.mvc;
+package com.us.fountainhead.gwtrest.server.service.rest;
 
 import com.us.fountainhead.gwtrest.server.validate.ValidationError;
 import java.util.ArrayList;
