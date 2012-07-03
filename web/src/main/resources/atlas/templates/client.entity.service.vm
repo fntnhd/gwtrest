@@ -3,10 +3,7 @@ package ${context.getProperty("namespace")}.client.service;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.http.client.Request;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
+import com.google.gwt.http.client.*;
 import ${context.getProperty("namespace")}.client.entity.${type.name};
 
 /**
@@ -36,8 +33,8 @@ public class ${type.name}EntityServiceClient extends EntityServiceClient {
                         String responseBody = response.getText();
 
                         try {
-                            ${type.name} ${util.uncapitalize(${type.name})} = JsonUtils.safeEval(responseBody);
-                            caller.onFind${type.name}ByIdResponse(${util.uncapitalize(${type.name})});
+                            FindByIdResponse findByIdResponse = JsonUtils.safeEval(responseBody);
+                            caller.onFind${type.name}ByIdResponse(findByIdResponse);
                         } catch (Throwable exception) {
                             caller.onFind${type.name}ByIdError(exception);
                         }
@@ -55,13 +52,23 @@ public class ${type.name}EntityServiceClient extends EntityServiceClient {
             caller.onFind${type.name}ByIdError(ex);
         }
     }
+    
+    public class FindByIdResponse extends ServiceResponse {
+        
+        protected FindByIdResponse() {}
+        
+        public final native ${type.name} get${type.name}() /*-{
+        return this.${util.uncapitalize(${type.name})};
+        }-*/;
+        
+    }
 
     /**
      * Callers must implement this interface to handle the callback
      */
     public interface FindById {
 
-        public void onFind${type.name}ByIdResponse(${type.name} ${util.uncapitalize(${type.name})});
+        public void onFind${type.name}ByIdResponse(FindByIdResponse response);
 
         public void onFind${type.name}ByIdError(Throwable exception);
     }
@@ -80,8 +87,8 @@ public class ${type.name}EntityServiceClient extends EntityServiceClient {
                         String responseBody = response.getText();
 
                         try {
-                            JsArray<${type.name}> ${util.uncapitalize(${type.name})}List = JsonUtils.safeEval(responseBody);
-                            caller.onFindAll${type.name}Response(${util.uncapitalize(${type.name})}List);
+                            FindAllResponse findAllResponse = JsonUtils.safeEval(responseBody);
+                            caller.onFindAll${type.name}Response(findAllResponse);
                         } catch (Throwable exception) {
                             caller.onFindAll${type.name}Error(exception);
                         }
@@ -99,18 +106,28 @@ public class ${type.name}EntityServiceClient extends EntityServiceClient {
             caller.onFindAll${type.name}Error(ex);
         }
     }
+    
+    public class FindAllResponse extends ServiceResponse {
+        
+        protected FindAllResponse() {}
+        
+        public final native JsArray<${type.name}> get${type.name}List() /*-{
+        return this.${util.uncapitalize(${type.name})}List;
+        }-*/;
+        
+    }
 
     /**
      * Callers must implement this interface to handle the callback
      */
     public interface FindAll {
 
-        public void onFindAll${type.name}Response(JsArray<${type.name}> ${util.uncapitalize(${type.name})}List);
+        public void onFindAll${type.name}Response(FindAllResponse response);
 
         public void onFindAll${type.name}Error(Throwable exception);
     }
 
-    public void add(${type.name} ${util.uncapitalize(${type.name})}, final Add caller) {
+    public void create(${type.name} ${util.uncapitalize(${type.name})}, final Create caller) {
         RequestBuilder builder = addRequest();
 
         try {
@@ -123,10 +140,10 @@ public class ${type.name}EntityServiceClient extends EntityServiceClient {
                     if (statusCode == Response.SC_OK) {
                         try {
                             String responseBody = response.getText();
-                            ${type.name} p = JsonUtils.safeEval(responseBody);
-                            caller.onAdd${type.name}Response(p);
+                            CreateResponse createResponse = JsonUtils.safeEval(responseBody);
+                            caller.onCreate${type.name}Response(createResponse);
                         } catch (Throwable exception) {
-                            caller.onAdd${type.name}Error(exception);
+                            caller.onCreate${type.name}Error(exception);
                         }
                     } else {
                         //do in case of server error
@@ -135,22 +152,32 @@ public class ${type.name}EntityServiceClient extends EntityServiceClient {
 
                 @Override
                 public void onError(Request request, Throwable exception) {
-                    caller.onAdd${type.name}Error(exception);
+                    caller.onCreate${type.name}Error(exception);
                 }
             });
         } catch (RequestException ex) {
-            caller.onAdd${type.name}Error(ex);
+            caller.onCreate${type.name}Error(ex);
         }
+    }
+    
+    public class CreateResponse extends ServiceResponse {
+        
+        protected CreateResponse() {}
+        
+        public final native ${type.name} get${type.name}() /*-{
+        return this.${util.uncapitalize(${type.name})};
+        }-*/;
+        
     }
 
     /**
      * Callers must implement this interface to handle the callback
      */
-    public interface Add {
+    public interface Create {
 
-        public void onAdd${type.name}Response(${type.name} ${util.uncapitalize(${type.name})});
+        public void onCreate${type.name}Response(CreateResponse response);
 
-        public void onAdd${type.name}Error(Throwable exception);
+        public void onCreate${type.name}Error(Throwable exception);
     }
 
     public void update(${type.name} ${util.uncapitalize(${type.name})}, final Update caller) {
@@ -166,8 +193,8 @@ public class ${type.name}EntityServiceClient extends EntityServiceClient {
                     if (statusCode == Response.SC_OK) {
                         try {
                             String responseBody = response.getText();
-                            ${type.name} p = JsonUtils.safeEval(responseBody);
-                            caller.onUpdate${type.name}Response(p);
+                            UpdateResponse updateResponse = JsonUtils.safeEval(responseBody);
+                            caller.onUpdate${type.name}Response(updateResponse);
                         } catch (Throwable exception) {
                             caller.onUpdate${type.name}Error(exception);
                         }
@@ -185,13 +212,23 @@ public class ${type.name}EntityServiceClient extends EntityServiceClient {
             caller.onUpdate${type.name}Error(ex);
         }
     }
+    
+    public class UpdateResponse extends ServiceResponse {
+        
+        protected UpdateResponse() {}
+        
+        public final native ${type.name} get${type.name}() /*-{
+        return this.${util.uncapitalize(${type.name})};
+        }-*/;
+        
+    }
 
     /**
      * Callers must implement this interface to handle the callback
      */
     public interface Update {
 
-        public void onUpdate${type.name}Response(${type.name} ${util.uncapitalize(${type.name})});
+        public void onUpdate${type.name}Response(UpdateResponse response);
 
         public void onUpdate${type.name}Error(Throwable exception);
     }
@@ -209,8 +246,8 @@ public class ${type.name}EntityServiceClient extends EntityServiceClient {
                     if (statusCode == Response.SC_OK) {
                         try {
                             String responseBody = response.getText();
-                            ${type.name} p = JsonUtils.safeEval(responseBody);
-                            caller.onDelete${type.name}Response(p);
+                            DeleteResponse deleteResponse = JsonUtils.safeEval(responseBody);
+                            caller.onDelete${type.name}Response(deleteResponse);
                         } catch (Throwable exception) {
                             caller.onDelete${type.name}Error(exception);
                         }
@@ -228,13 +265,23 @@ public class ${type.name}EntityServiceClient extends EntityServiceClient {
             caller.onDelete${type.name}Error(ex);
         }
     }
+    
+    public class DeleteResponse extends ServiceResponse {
+        
+        protected DeleteResponse() {}
+        
+        public final native ${type.name} get${type.name}() /*-{
+        return this.${util.uncapitalize(${type.name})};
+        }-*/;
+        
+    }
 
     /**
      * Callers must implement this interface to handle the callback
      */
     public interface Delete {
 
-        public void onDelete${type.name}Response(${type.name} ${util.uncapitalize(${type.name})});
+        public void onDelete${type.name}Response(DeleteResponse response);
 
         public void onDelete${type.name}Error(Throwable exception);
     }

@@ -31,7 +31,9 @@ public class PupilView extends VerticalPanel implements PupilEntityServiceClient
     }
 
     @Override
-    public void onFindAllPupilResponse(JsArray<Pupil> pupilList) {
+    public void onFindAllPupilResponse(PupilEntityServiceClient.FindAllResponse response) {
+        JsArray<Pupil> pupilList = response.getPupilList();
+        
         for (int i = 0; i < pupilList.length(); i++) {
             Pupil pupil = pupilList.get(i);
             table.setWidget(i, 1, new Label(pupil.getName()));
