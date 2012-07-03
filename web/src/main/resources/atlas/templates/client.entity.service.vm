@@ -2,7 +2,6 @@ package ${context.getProperty("namespace")}.client.service;
 
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
-import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.*;
 import ${context.getProperty("namespace")}.client.entity.${type.name};
 

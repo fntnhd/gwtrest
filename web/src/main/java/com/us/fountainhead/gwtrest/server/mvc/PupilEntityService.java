@@ -9,16 +9,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 /**
- *
- * @author Andrews
+ * Responsible for managing Pupil CRUD operations
  */
 @Controller
-public class PupilService {
+public class PupilEntityService {
+    
+    private static final String JSON = "Accept=application/json";
 
     @Autowired
     PupilDAO dao;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/pupil/findById/{id}", headers = "Accept=application/json")
+    @RequestMapping(method = RequestMethod.GET, value = "/pupil/findById/{id}", headers = JSON)
     public @ResponseBody
     FindByIdResponse findById(@PathVariable Long id) {
         FindByIdResponse response = new FindByIdResponse();
@@ -45,7 +46,7 @@ public class PupilService {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/pupil/findAll", headers = "Accept=application/json")
+    @RequestMapping(method = RequestMethod.GET, value = "/pupil/findAll", headers = JSON)
     public @ResponseBody
     FindAllResponse findAll() {
         FindAllResponse response = new FindAllResponse();
@@ -72,7 +73,7 @@ public class PupilService {
         }
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/pupil/create", headers = "Accept=application/json")
+    @RequestMapping(method = RequestMethod.POST, value = "/pupil/create", headers = JSON)
     public @ResponseBody
     CreateResponse create(@RequestBody Pupil pupil) {
         CreateResponse response = new CreateResponse();
@@ -99,7 +100,7 @@ public class PupilService {
         }
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/pupil/update", headers = "Accept=application/json")
+    @RequestMapping(method = RequestMethod.PUT, value = "/pupil/update", headers = JSON)
     public @ResponseBody
     UpdateResponse update(@RequestBody Pupil pupil) {
         UpdateResponse response = new UpdateResponse();
@@ -126,7 +127,7 @@ public class PupilService {
         }
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/pupil/delete/{id}", headers = "Accept=application/json")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/pupil/delete/{id}", headers = JSON)
     public @ResponseBody
     DeleteResponse delete(@PathVariable Long id) {
         DeleteResponse response = new DeleteResponse();
