@@ -1,1 +1,0 @@
-#if($op.returnMany)List<#end#if(${op.returnType.equals("void")})Void#else${op.returnType}#if(${model.isEntity(${op.returnType})})Proxy#end#end#if($op.returnMany)>#end

@@ -1,1 +1,0 @@
-#foreach($p in ${op.parameters})#if(${p.isMany()})List<${p.type}#if(${model.isEntity(${p.type})} || ${model.isEnumeration(${p.type})})Proxy#end>#else ${p.type}#if(${model.isEntity(${p.type})} || ${model.isEnumeration(${p.type})})Proxy#end#end ${p.name}#if($velocityHasNext), #end#end

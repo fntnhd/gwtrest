@@ -61,67 +61,12 @@
                 outputFile="${name}REST.java"
                 outputPath="${generated.source.root}/${base.package}/server/service/rest"
                 overwrite="true"/>
-    <!--    <target name="client.service.remote"
-                stereotype="control"
-                template="client.service.remote.vm"
-                outputFile="${name}Remote.java"
-                outputPath="${generated.source.root}/${base.package}/client/service"
-                overwrite="true"/>
-        <target name="client.service.async"
-                stereotype="control"
-                template="client.service.async.vm"
-                outputFile="${name}RemoteAsync.java"
-                outputPath="${generated.source.root}/${base.package}/client/service"
-                overwrite="true"/>
-        <target name="client.service.client"
-                stereotype="control"
-                template="client.service.client.vm"
-                outputFile="${name}Client.java"
-                outputPath="${generated.source.root}/${base.package}/client/service"
-                overwrite="true"/>
-        <target name="client.entity.service.remote"
-                stereotype="entity"
-                condition="notTransient"
-                template="client.entity.service.remote.vm"
-                outputFile="${name}DataServiceRemote.java"
-                outputPath="${generated.source.root}/${base.package}/client/service"
-                overwrite="true"/>
-        <target name="client.entity.service.async"
-                stereotype="entity"
-                condition="notTransient"
-                template="client.entity.service.async.vm"
-                outputFile="${name}DataServiceRemoteAsync.java"
-                outputPath="${generated.source.root}/${base.package}/client/service"
-                overwrite="true"/>
-        <target name="client.entity.service.client"
-                stereotype="entity"
-                condition="notTransient"
-                template="client.entity.service.client.vm"
-                outputFile="${name}DataServiceClient.java"
-                outputPath="${generated.source.root}/${base.package}/client/service"
-                overwrite="true"/>
-                -->
-                
         <target name="client.enum"
                 stereotype="enumeration"
                 template="client.enum.vm"
                 outputFile="${name}.java"
                 outputPath="${generated.source.root}/${base.package}/client/entity"
                 overwrite="true"/>
-                <!--
-        <target name="view.base"
-                stereotype="boundary"
-                template="view.base.vm"
-                outputFile="${name}Base.java"
-                outputPath="${generated.source.root}/${base.package}/client/ui"
-                overwrite="true"/>
-        <target name="view"
-                stereotype="boundary"
-                template="view.vm"
-                outputFile="${name}.java"
-                outputPath="${main.source.root}/${base.package}/client/ui"
-                overwrite="false"/>
-        -->
         <target name="client.entry.point"
                 stereotype="boundary"
                 collection="true"
@@ -138,7 +83,6 @@
                 outputFile="View.java"
                 outputPath="${generated.source.root}/${base.package}/client"
                 overwrite="true"/>
-                
         <target name="view.factory"
                 stereotype="boundary"
                 collection="true"
@@ -164,8 +108,29 @@
                 overwrite="true">
             <property name="url.pattern.root" value="gwtrest"/>
         </target>
+        <target name="urlrewrite.xml"
+                stereotype="entity"
+                collection="true"
+                template="urlrewrite.xml.vm"
+                outputFile="urlrewrite.xml"
+                outputPath="${web.root}/WEB-INF"
+                overwrite="true">
+            <property name="url.pattern.root" value="gwtrest"/>
+        </target>
        
                 <!--
+        <target name="view.base"
+                stereotype="boundary"
+                template="view.base.vm"
+                outputFile="${name}Base.java"
+                outputPath="${generated.source.root}/${base.package}/client/ui"
+                overwrite="true"/>
+        <target name="view"
+                stereotype="boundary"
+                template="view.vm"
+                outputFile="${name}.java"
+                outputPath="${main.source.root}/${base.package}/client/ui"
+                overwrite="false"/>
         <target name="secure.view.html"
                 condition="secure"
                 stereotype="boundary"
@@ -181,70 +146,7 @@
                 outputFile="${name}.html"
                 outputPath="${web.root}/WEB-INF/views"
                 overwrite="false">
-        </target>
-        
-        <target name="urlrewrite.xml"
-                stereotype="boundary"
-                collection="true"
-                template="urlrewrite.xml.vm"
-                outputFile="urlrewrite.xml"
-                outputPath="${web.root}/WEB-INF"
-                overwrite="true">
-            <property name="url.pattern.root" value="cps"/>
-        </target>
-        
-        <target name="spring.app.config"
-                stereotype="boundary"
-                collection="true"
-                template="spring.app.config.vm"
-                outputFile="app-config.xml"
-                outputPath="${web.root}/WEB-INF/spring"
-                overwrite="true"/>
-                
-        <target name="spring.mvc.config"
-                stereotype="boundary"
-                collection="true"
-                template="spring.mvc.config.vm"
-                outputFile="mvc-config.xml"
-                outputPath="${web.root}/WEB-INF/spring"
-                overwrite="true"/>
-               
-        <target name="client.validation.error.proxy"
-                stereotype="entity"
-                collection="true"
-                template="client.validation.error.proxy.vm"
-                outputFile="ValidationErrorProxy.java"
-                outputPath="${generated.source.root}/${base.package}/client/validate"
-                overwrite="true"/>
-        <target name="validation.error.transfer"
-                stereotype="entity"
-                collection="true"
-                template="validation.error.transfer.vm"
-                outputFile="ValidationErrorTransfer.java"
-                outputPath="${generated.source.root}/${base.package}/server/transfer"
-                overwrite="true"/>
-        <target name="client.validation.exception"
-                stereotype="entity"
-                collection="true"
-                template="client.validation.exception.vm"
-                outputFile="ClientValidationException.java"
-                outputPath="${generated.source.root}/${base.package}/client/validate"
-                overwrite="true"/>
-
-        <target name="server.service.servlet"
-                stereotype="control"
-                template="server.service.servlet.vm"
-                outputFile="${name}Servlet.java"
-                outputPath="${main.source.root}/${base.package}/server/service"
-                overwrite="false"/>
-        <target name="server.entity.service"
-                stereotype="entity"
-                condition="notTransient"
-                template="server.entity.service.servlet.vm"
-                outputFile="${name}DataServiceServlet.java"
-                outputPath="${generated.source.root}/${base.package}/server/service"
-                overwrite="true"/>
-                
+        </target>                
         <target name="client.session.service.remote"
                 stereotype="entity"
                 collection="true"
