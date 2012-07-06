@@ -6,6 +6,7 @@
      * @see ${ass.entity.name}
      */
 #if(${ass.isOwner()})
+    @JsonManagedReference("${util.uncapitalize(${type.name})}-${util.uncapitalize(${ass.name})}")
     @OneToOne(mappedBy="${ass.role}", cascade = {CascadeType.ALL})
     public ${ass.entity.name} get${util.capitalize(${ass.name})}() {
         return ${ass.name};
@@ -25,6 +26,7 @@
 #else
 
     @javax.xml.bind.annotation.XmlTransient
+    @JsonBackReference("${util.uncapitalize(${ass.name})}-${util.uncapitalize(${type.name})}")
     @ManyToOne
     @JoinColumns({
         @JoinColumn(name = "${util.addSpacerToCamelCaseUpper(${ass.name}, "_")}_ID", referencedColumnName = "ID")

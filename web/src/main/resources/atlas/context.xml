@@ -88,24 +88,15 @@
                 outputFile="${name}DataServiceClient.java"
                 outputPath="${generated.source.root}/${base.package}/client/service"
                 overwrite="true"/>
-        <target name="client.enum.proxy"
+                -->
+                
+        <target name="client.enum"
                 stereotype="enumeration"
-                template="client.enum.proxy.vm"
-                outputFile="${name}Proxy.java"
+                template="client.enum.vm"
+                outputFile="${name}.java"
                 outputPath="${generated.source.root}/${base.package}/client/entity"
                 overwrite="true"/>
-        <target name="client.entity.proxy"
-                stereotype="entity"
-                template="client.entity.proxy.vm"
-                outputFile="${name}Proxy.java"
-                outputPath="${generated.source.root}/${base.package}/client/entity"
-                overwrite="true"/>
-        <target name="entity.transfer"
-                stereotype="entity"
-                template="entity.transfer.vm"
-                outputFile="${name}Transfer.java"
-                outputPath="${generated.source.root}/${base.package}/server/transfer"
-                overwrite="true"/>
+                <!--
         <target name="view.base"
                 stereotype="boundary"
                 template="view.base.vm"

@@ -11,8 +11,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class NavigationController {
     
-    @RequestMapping(value = "/listPupils", method = RequestMethod.GET)
-    public String listPupils() {
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String welcome() {
+        return "login";
+    }
+    
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login() {
+        return "login";
+    }
+    
+    @RequestMapping(value = "/pupil", method = RequestMethod.GET)
+    public String pupil() {
         return "PupilView";
     }
     

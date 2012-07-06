@@ -68,29 +68,6 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>  
     </listener> 
 
-    <!-- GWT Servlets -->
-#foreach($t in $types)
-#if(! ${t.hasTag("transient")})
-    <servlet>
-        <servlet-name>${util.uncapitalize(${t.name})}DataServiceServlet</servlet-name>
-        <servlet-class>${context.getProperty("namespace")}.server.service.${t.name}DataServiceServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>${util.uncapitalize(${t.name})}DataServiceServlet</servlet-name>
-        <url-pattern>/${target.getProperty("url.pattern.root")}/${util.uncapitalize(${t.name})}DataService</url-pattern>
-    </servlet-mapping>
-#end
-#end
-#foreach($c in ${model.getControls()})
-    <servlet>
-        <servlet-name>${util.uncapitalize(${c.name})}</servlet-name>
-        <servlet-class>${context.getProperty("namespace")}.server.service.${c.name}Servlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>${util.uncapitalize(${c.name})}</servlet-name>
-        <url-pattern>/${target.getProperty("url.pattern.root")}/${util.uncapitalize(${c.name})}</url-pattern>
-    </servlet-mapping>
-#end
     <servlet>
         <servlet-name>sessionServiceServlet</servlet-name>
         <servlet-class>${context.getProperty("namespace")}.server.service.SessionServiceServlet</servlet-class>

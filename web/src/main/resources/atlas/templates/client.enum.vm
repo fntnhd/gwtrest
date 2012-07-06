@@ -1,6 +1,6 @@
 package ${context.getProperty("namespace")}.client.entity;
 
-public enum ${type.name}Proxy {
+public enum ${type.name} {
 
 #foreach($literal in $type.literals)
     ${literal.name}#if($velocityHasNext),

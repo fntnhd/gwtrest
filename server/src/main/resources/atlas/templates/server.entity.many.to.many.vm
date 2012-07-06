@@ -1,6 +1,7 @@
 #foreach($ass in ${type.getManyToMany()})
 
-#if(${ass.isOwner()})/**
+#if(${ass.isOwner()})
+    /**
      * Get the ${ass.name}List of the ${type.name}
      * @return ${ass.name}List
      * @see List
@@ -10,6 +11,7 @@
 #elseif(${ass.hasTag("transient")})
     @Transient
 #else
+    @JsonManagedReference("${util.uncapitalize(${type.name})}-${util.uncapitalize(${ass.name})}")
     @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(name="${util.addSpacerToCamelCaseUpper(${ass.role},"_")}_${util.addSpacerToCamelCaseUpper(${ass.name},"_")}",
         joinColumns=@JoinColumn(name="${util.addSpacerToCamelCaseUpper(${ass.role},"_")}_ID"),
