@@ -25,7 +25,7 @@
 .pop_up .popup-close {
     float:right;
     border: none;
-    background-image: url(../images/close.png);
+    background-image: url(../images/popup-close.png);
     width: 23px;
     height: 23px;
 }
