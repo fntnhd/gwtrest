@@ -1,0 +1,82 @@
+package ${context.getProperty("namespace")}.server.service.rest;
+
+import ${context.getProperty("namespace")}.server.entity.*;
+import ${context.getProperty("namespace")}.server.service.${type.name};
+import ${context.getProperty("namespace")}.server.validate.ValidationException;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+/**
+ * ${type.name} REST web service
+ */
+@Controller
+public class ${type.name}REST {
+
+    private static final String JSON = "Accept=application/json";
+    
+    @Autowired
+    private ${type.name} service;
+#foreach($op in ${type.operations})
+
+    @RequestMapping(method = RequestMethod.POST, value = "/${util.uncapitalize(${type.name})}/${op.name}", headers = JSON)
+    public @ResponseBody
+    ${util.capitalize(${op.name})}Response ${op.name}(@RequestBody ${util.capitalize(${op.name})}Request request) {
+        ${util.capitalize(${op.name})}Response response = new ${util.capitalize(${op.name})}Response();
+
+        try {
+#foreach($p in ${op.parameters})
+            ${p.type} ${p.name} = request.get${util.capitalize(${p.name})}();
+#end
+#if(!${op.returnType.equals("void")})
+            response.setValue(service.${op.name}(#foreach($p in ${op.parameters})${p.name}#if($velocityHasNext), #end#end));
+#else
+            service.${op.name}(#foreach($p in ${op.parameters})${p.name}#if($velocityHasNext), #end#end);
+#end
+        } catch (ValidationException ex) {
+            response.setErrorList(ex.getErrors());
+        }
+
+        return response;
+    }
+
+    public static class ${util.capitalize(${op.name})}Response extends ServiceResponse {
+#if(!${op.returnType.equals("void")})
+#if(${op.returnMany})
+#set($returnType = "List<" + ${op.returnType} + ">")
+#else
+#set($returnType = ${op.returnType})
+#end
+        private $returnType value;
+
+        public $returnType getValue() {
+            return value;
+        }
+
+        public void setValue($returnType value) {
+            this.value = value;
+        }
+#end
+    }
+    
+    public static class ${util.capitalize(${op.name})}Request {
+#foreach($p in ${op.parameters})
+        private ${p.type} ${p.name};
+#end
+#foreach($p in ${op.parameters})
+
+        public ${p.type} get${util.capitalize(${p.name})}() {
+            return ${p.name};
+        }
+
+        public void set${util.capitalize(${p.name})}(${p.type} ${p.name}) {
+            this.${p.name} = ${p.name};
+        }
+#end
+    }
+#end
+}

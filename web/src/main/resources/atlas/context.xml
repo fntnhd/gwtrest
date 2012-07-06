@@ -49,6 +49,12 @@
                 outputFile="${name}EntityService.java"
                 outputPath="${generated.source.root}/${base.package}/server/service/rest"
                 overwrite="true"/>
+        <target name="service.rest"
+                stereotype="control"
+                template="service.rest.vm"
+                outputFile="${name}REST.java"
+                outputPath="${generated.source.root}/${base.package}/server/service/rest"
+                overwrite="true"/>
     <!--    <target name="client.service.remote"
                 stereotype="control"
                 template="client.service.remote.vm"
