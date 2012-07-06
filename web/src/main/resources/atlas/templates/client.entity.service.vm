@@ -76,7 +76,7 @@ public class ${type.name}EntityServiceClient extends EntityServiceClient {
         RequestBuilder request = findAllRequest();
 
         try {
-            Request response = request.sendRequest(null, new RequestCallback() {
+            request.sendRequest(null, new RequestCallback() {
 
                 @Override
                 public void onResponseReceived(Request request, Response response) {
@@ -127,10 +127,10 @@ public class ${type.name}EntityServiceClient extends EntityServiceClient {
     }
 
     public void create(${type.name} ${util.uncapitalize(${type.name})}, final Create caller) {
-        RequestBuilder builder = addRequest();
+        RequestBuilder request = addRequest();
 
         try {
-            Request response = builder.sendRequest(${util.uncapitalize(${type.name})}.json(), new RequestCallback() {
+            request.sendRequest(${util.uncapitalize(${type.name})}.json(), new RequestCallback() {
 
                 @Override
                 public void onResponseReceived(Request request, Response response) {
@@ -180,10 +180,10 @@ public class ${type.name}EntityServiceClient extends EntityServiceClient {
     }
 
     public void update(${type.name} ${util.uncapitalize(${type.name})}, final Update caller) {
-        RequestBuilder request = updateRequest(${util.uncapitalize(${type.name})}.getId());
+        RequestBuilder request = updateRequest();
 
         try {
-            Request response = request.sendRequest(${util.uncapitalize(${type.name})}.json(), new RequestCallback() {
+            request.sendRequest(${util.uncapitalize(${type.name})}.json(), new RequestCallback() {
 
                 @Override
                 public void onResponseReceived(Request request, Response response) {
@@ -233,10 +233,10 @@ public class ${type.name}EntityServiceClient extends EntityServiceClient {
     }
 
     public void delete(${type.name} ${util.uncapitalize(${type.name})}, final Delete caller) {
-        RequestBuilder builder = deleteRequest(${util.uncapitalize(${type.name})}.getId());
+        RequestBuilder request = deleteRequest(${util.uncapitalize(${type.name})}.getId());
 
         try {
-            Request response = builder.sendRequest(${util.uncapitalize(${type.name})}.json(), new RequestCallback() {
+            request.sendRequest(${util.uncapitalize(${type.name})}.json(), new RequestCallback() {
 
                 @Override
                 public void onResponseReceived(Request request, Response response) {

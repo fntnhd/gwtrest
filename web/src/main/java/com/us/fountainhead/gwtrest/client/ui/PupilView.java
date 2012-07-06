@@ -6,7 +6,10 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.us.fountainhead.gwtrest.client.entity.Pupil;
+import com.us.fountainhead.gwtrest.client.entity.User;
 import com.us.fountainhead.gwtrest.client.service.PupilEntityServiceClient;
+import com.us.fountainhead.gwtrest.client.service.SecurityServiceClient;
+import com.us.fountainhead.gwtrest.client.service.SecurityServiceClient.FindUserByUsernameResponse;
 
 /**
  *
