@@ -1,0 +1,100 @@
+package ${context.getProperty("namespace")}.client.service;
+
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsonUtils;
+import com.google.gwt.http.client.*;
+import ${context.getProperty("namespace")}.client.entity.*;
+import java.util.List;
+
+/**
+ * Responsible for invoking the ${type.name} REST service
+ */
+public class ${type.name}Client extends ServiceClient {
+#foreach($op in ${type.operations})
+
+    public void ${op.name}(#foreach($p in $op.parameters)${p.type} ${p.name},#end final ${util.capitalize(${op.name})} caller) {
+        RequestBuilder request = post("${util.uncapitalize(${type.name})}/${op.name}");
+
+        try {
+            ${util.capitalize(${op.name})}Request ${op.name}Request = (${util.capitalize(${op.name})}Request) JavaScriptObject.createObject();
+
+#foreach($p in ${op.parameters})
+            ${op.name}Request.set${util.capitalize(${p.name})}(${p.name});
+#end            
+            request.sendRequest(${op.name}Request.json(), new RequestCallback() {
+
+                @Override
+                public void onResponseReceived(Request request, Response response) {
+                    int statusCode = response.getStatusCode();
+
+                    if (statusCode == Response.SC_OK) {
+                        try {
+                            String responseBody = response.getText();
+                            ${util.capitalize(${op.name})}Response ${op.name}Response = JsonUtils.safeEval(responseBody);
+                            caller.on${util.capitalize(${op.name})}(${op.name}Response);
+                        } catch (Throwable exception) {
+                            caller.on${util.capitalize(${op.name})}Error(exception);
+                        }
+                    } else {
+                        //TO-DO Add response error handling code.
+                    }
+                }
+
+                @Override
+                public void onError(Request request, Throwable exception) {
+                    caller.on${util.capitalize(${op.name})}Error(exception);
+                }
+            });
+        } catch (RequestException ex) {
+            caller.on${util.capitalize(${op.name})}Error(ex);
+        }
+    }
+    
+    public class ${util.capitalize(${op.name})}Response extends ServiceResponse {
+        
+        protected ${util.capitalize(${op.name})}Response() {}
+#if(!${op.returnType.equals("void")})
+#if(${op.returnMany})
+#set($returnType = "List<" + ${op.returnType} + ">")
+#else
+#set($returnType = ${op.returnType})
+#end
+
+        public final native $returnType getValue() /*-{
+        return this.value;
+        }-*/;
+#end       
+    }
+    
+    public class ${util.capitalize(${op.name})}Request extends JavaScriptObject {
+        
+        protected ${util.capitalize(${op.name})}Request() {}
+#foreach($p in ${op.parameters})
+
+        public final native ${p.type} get${util.capitalize(${p.name})}() /*-{
+        return this.${p.name}; 
+        }-*/;
+        
+        public final native void set${util.capitalize(${p.name})}(${p.type} ${p.name}) /*-{
+        this.${p.name} = ${p.name};
+        }-*/;
+#end        
+
+        public final native String json() /*-{
+        return JSON.stringify(this);
+        }-*/;
+        
+    }
+
+    /**
+     * Callers must implement this interface to handle the callback
+     */
+    public interface ${util.capitalize(${op.name})} {
+
+        public void on${util.capitalize(${op.name})}(${util.capitalize(${op.name})}Response response);
+
+        public void on${util.capitalize(${op.name})}Error(Throwable exception);
+    }
+#end
+
+}
