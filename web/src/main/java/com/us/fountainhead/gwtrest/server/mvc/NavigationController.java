@@ -20,10 +20,15 @@ public class NavigationController {
     public String login() {
         return "login";
     }
+
+    @RequestMapping(value="/secure/home", method = RequestMethod.GET)
+    public String home() {
+        return "secure/HomeView";
+    }
     
-    @RequestMapping(value = "/pupil", method = RequestMethod.GET)
+    @RequestMapping(value = "/secure/pupil", method = RequestMethod.GET)
     public String pupil() {
-        return "PupilView";
+        return "secure/PupilView";
     }
     
 }
