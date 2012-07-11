@@ -21,6 +21,16 @@ public class NavigationController {
         return "login";
     }
 
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout() {
+        return "logout";
+    }
+
+    @RequestMapping(value = "/invalidLogin", method = RequestMethod.GET)
+    public String invalidLogin() {
+        return "invalidLogin";
+    }
+
     @RequestMapping(value="/secure/home", method = RequestMethod.GET)
     public String home() {
         return "secure/HomeView";
