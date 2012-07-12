@@ -155,10 +155,10 @@
                 stereotype="boundary"
                 collection="true"
                 template="client.entry.point.vm"
-                outputFile="Gwtrest.java"
+                outputFile="gwtrest.java"
                 outputPath="${generated.source.root}/${base.package}/client"
                 overwrite="true">
-            <property name="entry.point" value="Gwtrest"/>
+            <property name="entry.point" value="gwtrest"/>
         </target>
         <target name="view.enum"
                 stereotype="boundary"
@@ -185,10 +185,10 @@
                 stereotype="boundary"
                 collection="true"
                 template="client.gwt.vm"
-                outputFile="Gwtrest.gwt.xml"
+                outputFile="gwtrest.gwt.xml"
                 outputPath="${main.resource.root}/${base.package}"
                 overwrite="true">
-            <property name="entry.point" value="Gwtrest"/>
+            <property name="entry.point" value="gwtrest"/>
         </target>
         <target name="web.xml"
                 stereotype="entity"
