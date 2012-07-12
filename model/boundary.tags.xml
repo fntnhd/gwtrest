@@ -1,6 +1,9 @@
 
 <tags>
+    <boundary name="HomeView">
+        <tag name="root" value="true"/>
+    </boundary>
     <boundary name="PupilView">
         <tag name="root" value="true"/>    
-    </boundary>    
+    </boundary>
 </tags>

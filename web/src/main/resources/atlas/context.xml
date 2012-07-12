@@ -173,5 +173,13 @@
                 overwrite="true">
             <property name="url.pattern.root" value="gwtrest"/>
         </target>
+        <target name="spring.security.context.xml"
+                stereotype="entity"
+                collection="true"
+                template="spring.security.context.xml.vm"
+                outputFile="security-context.xml"
+                outputPath="${web.root}/WEB-INF/spring"
+                overwrite="true">
+        </target>
     </targets>
 </context>

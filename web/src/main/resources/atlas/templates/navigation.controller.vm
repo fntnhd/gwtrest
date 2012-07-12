@@ -33,7 +33,7 @@ public class NavigationController {
 
     @RequestMapping(value="/secure/home", method = RequestMethod.GET)
     public String home() {
-        return "secure/HomeView";
+        return "secure/home";
     }
 
 }

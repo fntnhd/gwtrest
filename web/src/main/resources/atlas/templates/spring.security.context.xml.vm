@@ -38,5 +38,5 @@
         <authentication-provider user-service-ref="securedUserAuthenticationManager"/>
     </authentication-manager>
 
-    <beans:bean id="securedUserAuthenticationManager" class="com.us.fountainhead.gwtrest.server.security.SecuredUserAuthenticationManager"/>
+    <beans:bean id="securedUserAuthenticationManager" class="${context.getProperty("namespace")}.server.security.SecuredUserAuthenticationManager"/>
 </beans:beans>

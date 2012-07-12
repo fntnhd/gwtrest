@@ -13,7 +13,7 @@ public class PageController {
     
     @RequestMapping(value = "/secure/pupil", method = RequestMethod.GET)
     public String pupil() {
-        return "secure/PupilView";
+        return "secure/pupil";
     }
     
 }
