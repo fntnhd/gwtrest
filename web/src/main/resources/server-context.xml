@@ -29,16 +29,14 @@
           p:dataSource-ref="dataSource">
         <property name="jpaProperties">
             <props>
-                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
-                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
-                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.hbm2ddl.auto">create</prop>
+                <prop key="hibernate.show_sql">true</prop>
             </props>
         </property>
     </bean>          
     
     <jee:jndi-lookup id="dataSource" jndi-name="jdbc/gwtrestDS"/>
-
-    <context:property-placeholder location="classpath:datasource.properties"/>
 
 
     <bean id="transactionManager"

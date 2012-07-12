@@ -1,4 +1,4 @@
-package com.us.fountainhead.gwtrest.client.service;
+package ${context.getProperty("namespace")}.client.service;
 
 import com.google.gwt.http.client.RequestBuilder;
 
@@ -7,33 +7,33 @@ import com.google.gwt.http.client.RequestBuilder;
  * @author Andrews
  */
 public abstract class EntityServiceClient extends ServiceClient {
-    
+
     private static final String FIND_BY_ID = "/findById/";
     private static final String FIND_ALL = "/findAll";
     private static final String CREATE = "/create";
     private static final String UPDATE = "/update";
     private static final String DELETE = "/delete/";
-   
+
     protected RequestBuilder findByIdRequest(String id) {
         return get(entity() + FIND_BY_ID + id);
     }
-    
+
     protected RequestBuilder findAllRequest() {
         return get(entity() + FIND_ALL);
     }
-    
+
     protected RequestBuilder addRequest() {
         return post(entity() + CREATE);
     }
-    
+
     protected RequestBuilder updateRequest() {
         return put(entity() + UPDATE);
     }
-    
+
     protected RequestBuilder deleteRequest(String id) {
         return delete(entity() + DELETE + id);
     }
-    
+
     protected abstract String entity();
-    
+
 }

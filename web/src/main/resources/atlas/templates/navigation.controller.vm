@@ -1,4 +1,4 @@
-package com.us.fountainhead.gwtrest.server.mvc;
+package ${context.getProperty("namespace")}.server.mvc;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class NavigationController {
-    
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String welcome() {
         return "login";
     }
-    
+
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
         return "login";
@@ -35,10 +35,5 @@ public class NavigationController {
     public String home() {
         return "secure/HomeView";
     }
-    
-    @RequestMapping(value = "/secure/pupil", method = RequestMethod.GET)
-    public String pupil() {
-        return "secure/PupilView";
-    }
-    
+
 }
