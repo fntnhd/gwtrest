@@ -1,7 +1,6 @@
-package com.us.fountainhead.gwtrest.client.service;
+package ${context.getProperty("namespace")}.client.service;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.us.fountainhead.gwtrest.client.entity.User;
 
 /**
  * Access session attributes

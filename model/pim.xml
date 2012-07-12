@@ -212,7 +212,6 @@
 					<upperValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000046__0669_4f13_B9BB_5F2FCC80B6E5" value="1"/>
 				</ownedAttribute>
 			</packagedElement>
-			<packagedElement xmi:type="uml:Class" xmi:id="EAID_ED2C5E60_B6EE_4b91_B025_CBA00BB60F59" name="PupilView" visibility="public"/>
 			<packagedElement xmi:type="uml:Class" xmi:id="EAID_C9F19C52_2262_4bf5_BFE7_41706603D42C" name="SecurityService" visibility="public">
 				<ownedOperation xmi:id="EAID_6971B8AF_FAC1_40e2_9359_57DBCF8FAD60" name="findUserByUsername" visibility="public" concurrency="sequential">
 					<ownedParameter xmi:id="EAID_4DA8B8AD_5FE5_4fd5_9811_919FD615A527" name="username" direction="in" isStream="false" isException="false" isOrdered="0" isUnique="1" type="EAJava_string"/>
@@ -257,7 +256,6 @@
 		<thecustomprofile:enum base_Attribute="EAID_5BD786CB_B74C_47be_8C8B_BE55AE1747CF"/>
 		<thecustomprofile:entity base_Class="EAID_4BF8A3DA_AEEC_442b_BB6B_1B203C55DD1C"/>
 		<thecustomprofile:entity base_Class="EAID_D65EA5E0_083A_44f9_A36B_2954D4DB6245"/>
-		<thecustomprofile:boundary base_Class="EAID_ED2C5E60_B6EE_4b91_B025_CBA00BB60F59"/>
 		<thecustomprofile:control base_Class="EAID_C9F19C52_2262_4bf5_BFE7_41706603D42C"/>
 		<thecustomprofile:entity base_Class="EAID_102AA8EC_B274_4566_979A_6D2DD297584B"/>
 		<thecustomprofile:entity base_Class="EAID_4ABB8168_097D_4492_8458_3F686B212260"/>
@@ -914,17 +912,6 @@
 					<Association xmi:id="EAID_019404E3_B641_4a3a_B003_F7061FB84EF3" start="EAID_D65EA5E0_083A_44f9_A36B_2954D4DB6245" end="EAID_FF96DDA7_0359_4342_B09B_EF03056C8D59"/>
 					<Aggregation xmi:id="EAID_BF55E457_0669_4f13_B9BB_5F2FCC80B6E5" start="EAID_D65EA5E0_083A_44f9_A36B_2954D4DB6245" end="EAID_4BF8A3DA_AEEC_442b_BB6B_1B203C55DD1C"/>
 				</links>
-			</element>
-			<element xmi:idref="EAID_ED2C5E60_B6EE_4b91_B025_CBA00BB60F59" xmi:type="uml:Class" name="PupilView" scope="public">
-				<model package="EAPK_DA954284_A580_424f_9B21_2D35D3F9F12A" tpos="0" ea_localid="103" ea_eleType="element"/>
-				<properties isSpecification="false" sType="Class" nType="0" scope="public" stereotype="boundary" isRoot="false" isLeaf="false" isAbstract="false" isActive="false"/>
-				<project author="Administrator" version="1.0" phase="1.0" created="2012-07-01 00:22:12" modified="2012-07-01 00:22:25" complexity="1" status="Proposed"/>
-				<code gentype="Java"/>
-				<style appearance="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
-				<modelDocument/>
-				<tags/>
-				<xrefs value="$XREFPROP=$XID={2E15B6ED-3B9F-496f-85E0-BBB9769B6BB9}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=boundary;GUID={01D5563D-C0A2-4a02-A188-6118F2B9206B};@ENDSTEREO;$DES;$CLT={ED2C5E60-B6EE-4b91-B025-CBA00BB60F59}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
-				<extendedProperties tagged="0" package_name="Platform Independent Model"/>
 			</element>
 			<element xmi:idref="EAID_C9F19C52_2262_4bf5_BFE7_41706603D42C" xmi:type="uml:Class" name="SecurityService" scope="public">
 				<model package="EAPK_DA954284_A580_424f_9B21_2D35D3F9F12A" tpos="0" ea_localid="104" ea_eleType="element"/>
@@ -1856,7 +1843,6 @@
 				<extendedProperties/>
 				<elements>
 					<element geometry="Left=271;Top=129;Right=361;Bottom=199;" subject="EAID_B503DD5A_4997_4323_8E06_9272851D7CFE" seqno="1" style="DUID=329C3DFB;"/>
-					<element geometry="Left=283;Top=274;Right=435;Bottom=337;" subject="EAID_ED2C5E60_B6EE_4b91_B025_CBA00BB60F59" seqno="2" style="DUID=E1BA90CD;NSL=0;BCol=-1;BFol=-1;LCol=-1;LWth=-1;fontsz=0;bold=0;italic=0;ul=0;charset=0;pitch=0;"/>
 				</elements>
 			</diagram>
 		</diagrams>

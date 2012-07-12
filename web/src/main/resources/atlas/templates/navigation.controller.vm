@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- *
+ * Responsible for handling basic navigation.  Create a new controller for additional page navigations
  * @author Andrews
  */
 @Controller
@@ -29,6 +29,11 @@ public class NavigationController {
     @RequestMapping(value = "/invalidLogin", method = RequestMethod.GET)
     public String invalidLogin() {
         return "invalidLogin";
+    }
+
+    @RequestMapping(value = "/invalidSession", method = RequestMethod.GET)
+    public String invalidSession() {
+        return "invalidSession";
     }
 
     @RequestMapping(value="/secure/home", method = RequestMethod.GET)

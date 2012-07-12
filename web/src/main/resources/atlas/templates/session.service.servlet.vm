@@ -1,12 +1,12 @@
-package com.us.fountainhead.gwtrest.server.service;
+package ${context.getProperty("namespace")}.server.service;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.us.fountainhead.gwtrest.client.service.SessionService;
-import com.us.fountainhead.gwtrest.server.security.SecuredUser;
+import ${context.getProperty("namespace")}.client.service.SessionService;
+import ${context.getProperty("namespace")}.server.security.SecuredUser;
+import java.io.IOException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.io.IOException;
 
 /**
  * Provides access to session attributes
@@ -20,19 +20,19 @@ public class SessionServiceServlet extends RemoteServiceServlet implements Sessi
     public String getCurrentUser() {
         SecuredUser securedUser = (SecuredUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (securedUser != null) {
-            com.us.fountainhead.gwtrest.server.entity.User u = securedUser.getUser();
+            ${context.getProperty("namespace")}.server.entity.User u = securedUser.getUser();
             ObjectMapper mapper = new ObjectMapper();
             String json = null;
-            try {
-                json = mapper.writeValueAsString(u);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return json;
+        try {
+            json = mapper.writeValueAsString(u);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        return null;
+        return json;
     }
+
+    return null;
+}
 
     /**
      * Get the requested entity
