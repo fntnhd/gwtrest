@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+    <META HTTP-EQUIV="Expires" CONTENT="-1">
+    <title>Login</title>
+
+    <link href="styles/style.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+
+<div id="topgray_wrapper">
+    <!--
+    <div class="floatright"><a id="requestReg" class="lightbutton" href="requestRegistration">Request Registration</a>&nbsp;<a id="forgotpw" class="lightbutton" href="forgotPassword">Forgot Password?</a></div>
+    -->
+</div>
+
+<div id="messages">
+    <div id="top_info_msg">
+        <div class="message" align="center">
+            <img src="images/msg-icon-info.png">
+            &nbsp;You have been logged out.
+        </div>
+    </div>
+</div>
+
+<div id="login_wrapper">
+    <div class="login_button-wrapper">
+
+        <form class="login" action="j_spring_security_check" method="post">
+            <input type="text" id="LoginView-widget-email" name="j_username" title="Please enter your username"/>
+            <input type="password" id="LoginView-widget-password" name="j_password" title="Please enter your password"/>
+            <input id="LoginView-widget-login" type="submit" value="Login"/>
+        </form>
+
+    </div>
+</div>
+
+
+</body>
+</html>
+
