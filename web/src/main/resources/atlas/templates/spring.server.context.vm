@@ -36,7 +36,7 @@
         </property>
     </bean>
 
-    <jee:jndi-lookup id="dataSource" jndi-name="jdbc/gwtrestDS"/>
+    <jee:jndi-lookup id="dataSource" jndi-name="jdbc/${target.getProperty("datasource")}DS"/>
 
 
     <bean id="transactionManager"
@@ -45,5 +45,5 @@
 
     <tx:annotation-driven/>
 
-    <context:component-scan base-package="com.us.fountainhead.gwtrest.server"/>
+    <context:component-scan base-package="${context.getProperty("namespace")}.server"/>
 </beans>

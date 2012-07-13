@@ -190,6 +190,15 @@
                 overwrite="true">
             <property name="entry.point" value="gwtrest"/>
         </target>
+        <target name="spring.server.context"
+                stereotype="entity"
+                collection="true"
+                template="spring.server.context.vm"
+                outputFile="server-context.xml"
+                outputPath="${main.resource.root}"
+                overwrite="true">
+            <property name="datasource" value="gwtrest"/>
+        </target>
         <target name="web.xml"
                 stereotype="entity"
                 collection="true"
