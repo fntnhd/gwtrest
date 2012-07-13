@@ -139,5 +139,23 @@
                 outputFile="${name}ValidationTestHelper.java"
                 outputPath="${test.source.root}/${base.package}/server/entity"
                 overwrite="false"/>
+
+<!-- These are just here so the app will run out of the box.  You will want to remove these after your first build. -->
+        <target name="security.service.impl"
+                stereotype="entity"
+                collection="true"
+                template="security.service.impl.vm"
+                outputFile="SecurityServiceImpl.java"
+                outputPath="${main.source.root}/${base.package}/server/service/impl"
+                overwrite="true">
+            <property name="persistence.unit" value="gwtrestPU"/>
+        </target>
+        <target name="user.validation.helper"
+                stereotype="entity"
+                collection="true"
+                template="user.validation.helper.vm"
+                outputFile="UserValidationTestHelper.java"
+                outputPath="${test.source.root}/${base.package}/server/entity"
+                overwrite="true"/>
     </targets>
 </context>

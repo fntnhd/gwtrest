@@ -1,4 +1,4 @@
-package com.us.fountainhead.gwtrest.server.entity;
+package ${context.getProperty("namespace")}.server.entity;
 
 /**
  * Responsible for generating property values for positive and negative tests.
